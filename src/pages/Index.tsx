@@ -1,11 +1,19 @@
 
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
+import { Carousel, CarouselContent, CarouselItem } from "@/components/ui/carousel";
 import { Link } from "react-router-dom";
 import { ArrowDown, Star, Users, Trophy, Clock, CheckCircle, ArrowRight } from "lucide-react";
+import { useEffect } from "react";
+import useEmblaCarousel from "embla-carousel-react";
+import Autoplay from "embla-carousel-autoplay";
 
 const Index = () => {
+  // Scroll to top when component mounts
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   const heroSlides = [
     {
       image: "https://images.unsplash.com/photo-1461749280684-dccba630e2f6?ixlib=rb-4.0.3&auto=format&fit=crop&w=2426&q=80",
@@ -132,14 +140,24 @@ const Index = () => {
     }
   ];
 
+  const [heroEmblaRef] = useEmblaCarousel(
+    { loop: true },
+    [Autoplay({ delay: 5000 })]
+  );
+
+  const [testimonialsEmblaRef] = useEmblaCarousel(
+    { loop: true, align: "start" },
+    [Autoplay({ delay: 4000 })]
+  );
+
   return (
     <div className="min-h-screen">
       {/* Hero Carousel Section */}
       <section className="relative h-screen overflow-hidden">
-        <Carousel className="w-full h-full" opts={{ align: "start", loop: true }}>
-          <CarouselContent>
+        <div className="overflow-hidden h-full" ref={heroEmblaRef}>
+          <div className="flex h-full">
             {heroSlides.map((slide, index) => (
-              <CarouselItem key={index} className="relative h-screen">
+              <div key={index} className="relative h-screen flex-[0_0_100%]">
                 {/* Background overlay with blue tint */}
                 <div className="absolute inset-0 bg-gradient-to-br from-[#004282]/80 to-[#0056a3]/80 z-10"></div>
                 
@@ -165,12 +183,10 @@ const Index = () => {
                     </div>
                   </div>
                 </div>
-              </CarouselItem>
+              </div>
             ))}
-          </CarouselContent>
-          <CarouselPrevious className="left-4 text-white border-white hover:bg-white hover:text-[#004282]" />
-          <CarouselNext className="right-4 text-white border-white hover:bg-white hover:text-[#004282]" />
-        </Carousel>
+          </div>
+        </div>
         
         <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 z-20">
           <ArrowDown className="h-8 w-8 animate-bounce text-white" />
@@ -258,11 +274,11 @@ const Index = () => {
           </div>
           
           <div className="relative max-w-6xl mx-auto">
-            <Carousel className="w-full" opts={{ align: "start", loop: true }}>
-              <CarouselContent>
+            <div className="overflow-hidden" ref={testimonialsEmblaRef}>
+              <div className="flex">
                 {testimonials.map((testimonial, index) => (
-                  <CarouselItem key={index} className="md:basis-1/3">
-                    <Card className="border-0 shadow-md h-full">
+                  <div key={index} className="flex-[0_0_33.333%] min-w-0 pl-4">
+                    <Card className="border-0 shadow-md h-full mr-4">
                       <CardContent className="p-6 flex flex-col h-full">
                         <div className="flex mb-4">
                           {[...Array(testimonial.rating)].map((_, i) => (
@@ -278,12 +294,10 @@ const Index = () => {
                         </div>
                       </CardContent>
                     </Card>
-                  </CarouselItem>
+                  </div>
                 ))}
-              </CarouselContent>
-              <CarouselPrevious className="hidden md:flex" />
-              <CarouselNext className="hidden md:flex" />
-            </Carousel>
+              </div>
+            </div>
           </div>
         </div>
       </section>
@@ -301,7 +315,7 @@ const Index = () => {
             <Button asChild size="lg" className="bg-white text-[#004282] hover:bg-gray-100 text-lg px-8 py-3">
               <Link to="/contact#contact-form">Get Started Today</Link>
             </Button>
-            <Button asChild variant="outline" size="lg" className="border-white bg-white/10 text-white hover:bg-white hover:text-[#004282] text-lg px-8 py-3">
+            <Button asChild variant="outline" size="lg" className="border-white text-white bg-[#004282] hover:bg-white hover:text-[#004282] text-lg px-8 py-3 border-2">
               <Link to="/portfolio">View Our Work</Link>
             </Button>
           </div>

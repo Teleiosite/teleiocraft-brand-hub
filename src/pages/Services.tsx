@@ -3,8 +3,14 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { ArrowRight, CheckCircle, Star, Award, Clock, Users } from "lucide-react";
+import { useEffect } from "react";
 
 const Services = () => {
+  // Scroll to top when component mounts
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   const services = [
     {
       title: "Web Design / Landing Pages",
@@ -174,41 +180,43 @@ const Services = () => {
           
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {services.map((service, index) => (
-              <Card key={index} className={`border-0 shadow-lg hover:shadow-xl transition-all duration-300 h-full relative ${service.popular ? 'ring-2 ring-[#004282]' : ''}`}>
+              <Card key={index} className={`border-0 shadow-lg hover:shadow-xl transition-all duration-300 relative overflow-hidden bg-white rounded-xl ${service.popular ? 'ring-2 ring-[#004282]' : ''} flex flex-col h-full`}>
                 {service.popular && (
-                  <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
-                    <span className="bg-[#004282] text-white px-4 py-1 rounded-full text-sm font-semibold">
+                  <div className="absolute -top-3 left-1/2 transform -translate-x-1/2 z-10">
+                    <span className="bg-[#004282] text-white px-6 py-2 rounded-full text-sm font-semibold shadow-lg">
                       Most Popular
                     </span>
                   </div>
                 )}
-                <CardHeader className="text-center pb-4">
+                <CardHeader className="text-center pb-4 pt-8">
                   <div className="text-5xl mb-4">{service.icon}</div>
-                  <CardTitle className="text-xl text-gray-900 mb-2">{service.title}</CardTitle>
+                  <CardTitle className="text-xl text-gray-900 mb-3 min-h-[3.5rem] flex items-center justify-center">
+                    {service.title}
+                  </CardTitle>
                   <div className="flex items-center justify-center mb-4">
                     <span className="text-3xl font-bold text-[#004282]">{service.startingPrice}</span>
                     <span className="text-gray-500 ml-2">starting at</span>
                   </div>
                 </CardHeader>
-                <CardContent className="flex flex-col h-full pt-0">
-                  <p className="text-gray-600 mb-6 flex-grow">
+                <CardContent className="flex flex-col flex-grow pt-0 px-6 pb-6">
+                  <p className="text-gray-600 mb-6 text-center leading-relaxed min-h-[4.5rem] flex items-center">
                     {service.description}
                   </p>
                   
-                  <div className="mb-6">
+                  <div className="mb-6 flex-grow">
                     <h4 className="font-semibold text-gray-900 mb-4 text-center">What's Included:</h4>
                     <ul className="space-y-3">
                       {service.features.map((feature, featureIndex) => (
-                        <li key={featureIndex} className="flex items-center text-sm text-gray-600">
-                          <CheckCircle className="h-4 w-4 text-green-500 mr-3 flex-shrink-0" />
-                          {feature}
+                        <li key={featureIndex} className="flex items-start text-sm text-gray-600">
+                          <CheckCircle className="h-4 w-4 text-green-500 mr-3 flex-shrink-0 mt-0.5" />
+                          <span className="flex-1">{feature}</span>
                         </li>
                       ))}
                     </ul>
                   </div>
                   
                   <div className="mt-auto">
-                    <Button asChild className={`w-full ${service.popular ? 'bg-[#004282] hover:bg-[#003366]' : 'bg-gray-800 hover:bg-gray-900'} text-white`}>
+                    <Button asChild className={`w-full ${service.popular ? 'bg-[#004282] hover:bg-[#003366]' : 'bg-gray-800 hover:bg-gray-900'} text-white rounded-lg py-3 font-medium`}>
                       <Link to="/contact">
                         Get Started <ArrowRight className="ml-2 h-4 w-4" />
                       </Link>

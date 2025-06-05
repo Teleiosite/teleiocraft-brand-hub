@@ -1,5 +1,5 @@
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
@@ -8,112 +8,257 @@ import { ExternalLink, ArrowRight, Star, TrendingUp, Users, Award } from "lucide
 const Portfolio = () => {
   const [activeFilter, setActiveFilter] = useState("all");
 
+  // Scroll to top when component mounts
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   const categories = [
-    { id: "all", name: "All Projects", count: 9 },
-    { id: "web", name: "Web Design", count: 3 },
-    { id: "mobile", name: "Mobile Apps", count: 2 },
-    { id: "branding", name: "Branding", count: 2 },
-    { id: "marketing", name: "Digital Marketing", count: 2 }
+    { id: "all", name: "All Projects", count: 21 },
+    { id: "web", name: "Web Design", count: 7 },
+    { id: "digital-marketing", name: "Digital Marketing", count: 7 },
+    { id: "ai-agent", name: "AI Agent Services", count: 7 },
+    { id: "mobile", name: "Mobile App Development", count: 7 },
+    { id: "branding", name: "Branding", count: 7 },
+    { id: "graphic", name: "Graphic Design", count: 7 },
+    { id: "cloud", name: "Cloud Computing", count: 7 }
   ];
 
   const projects = [
+    // Web Design Services
     {
       id: 1,
-      title: "TechStart SaaS Platform",
+      title: "Custom Website Design",
       category: "web",
-      description: "Modern SaaS landing page with conversion optimization that increased signups by 300%",
+      description: "Modern responsive website with custom design elements and optimized user experience",
       image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=600&h=400&fit=crop",
-      tags: ["React", "Tailwind", "Landing Page", "SaaS"],
-      results: "300% increase in signups",
+      tags: ["Custom Design", "Responsive", "UX/UI", "Modern"],
+      results: "250% increase in user engagement",
       client: "TechStart Inc.",
       link: "#"
     },
     {
       id: 2,
-      title: "ShopEasy Mobile Commerce",
-      category: "mobile",
-      description: "iOS and Android app for online retail platform with seamless shopping experience",
-      image: "https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?w=600&h=400&fit=crop",
-      tags: ["React Native", "E-commerce", "Mobile", "UI/UX"],
-      results: "250% increase in mobile sales",
-      client: "RetailCorp",
+      title: "Landing Page Optimization",
+      category: "web",
+      description: "High-converting landing pages with A/B testing and conversion rate optimization",
+      image: "https://images.unsplash.com/photo-1493397212122-2b85dda8106b?w=600&h=400&fit=crop",
+      tags: ["Landing Page", "CRO", "A/B Testing", "Optimization"],
+      results: "180% conversion rate improvement",
+      client: "ConvertPro",
       link: "#"
     },
     {
       id: 3,
-      title: "Innovate Agency Rebrand",
-      category: "branding",
-      description: "Complete brand identity redesign for marketing agency including logo, website, and materials",
-      image: "https://images.unsplash.com/photo-1493397212122-2b85dda8106b?w=600&h=400&fit=crop",
-      tags: ["Logo Design", "Brand Identity", "Print", "Web Design"],
-      results: "40% increase in client inquiries",
-      client: "Innovate Agency",
+      title: "E-commerce Platform",
+      category: "web",
+      description: "Full-featured e-commerce website with payment integration and inventory management",
+      image: "https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?w=600&h=400&fit=crop",
+      tags: ["E-commerce", "Payment Gateway", "Inventory", "Shopping Cart"],
+      results: "300% increase in online sales",
+      client: "ShopEasy",
       link: "#"
     },
     {
       id: 4,
-      title: "Bella Vista Restaurant",
+      title: "CMS Integration",
       category: "web",
-      description: "Responsive restaurant website with online ordering system and reservation management",
+      description: "WordPress and Webflow integration with custom content management solutions",
       image: "https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=600&h=400&fit=crop",
-      tags: ["WordPress", "Online Ordering", "Restaurant", "Reservations"],
-      results: "150% increase in online orders",
-      client: "Bella Vista",
+      tags: ["WordPress", "Webflow", "CMS", "Content Management"],
+      results: "90% reduction in content update time",
+      client: "ContentCorp",
       link: "#"
     },
     {
       id: 5,
-      title: "GrowthTech Campaign",
-      category: "marketing",
-      description: "Multi-platform digital marketing campaign that drove exceptional engagement and conversions",
+      title: "UI/UX Design System",
+      category: "web",
+      description: "Comprehensive design system with reusable components and style guidelines",
       image: "https://images.unsplash.com/photo-1605810230434-7631ac76ec81?w=600&h=400&fit=crop",
-      tags: ["Social Media", "PPC", "Analytics", "Lead Generation"],
-      results: "400% increase in qualified leads",
-      client: "GrowthTech",
+      tags: ["Design System", "UI/UX", "Components", "Guidelines"],
+      results: "60% faster development cycles",
+      client: "DesignLab",
       link: "#"
     },
     {
       id: 6,
-      title: "FitTracker Pro App",
-      category: "mobile",
-      description: "Health and fitness app with AI-powered recommendations and social features",
+      title: "Responsive Development",
+      category: "web",
+      description: "Mobile-first responsive web development ensuring perfect display across all devices",
       image: "https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?w=600&h=400&fit=crop",
-      tags: ["Flutter", "AI", "Health", "Social Features"],
-      results: "100K+ downloads in first month",
-      client: "HealthTech Solutions",
+      tags: ["Responsive", "Mobile-First", "Cross-Platform", "Optimization"],
+      results: "40% increase in mobile traffic",
+      client: "MobileTech",
       link: "#"
     },
     {
       id: 7,
-      title: "ProfessionalCorp Identity",
-      category: "branding",
-      description: "Corporate identity package for B2B consulting firm with professional design language",
+      title: "Website Maintenance",
+      category: "web",
+      description: "Ongoing website maintenance and support services with 24/7 monitoring",
       image: "https://images.unsplash.com/photo-1488590528505-98d2b5aba04b?w=600&h=400&fit=crop",
-      tags: ["Corporate", "Professional", "B2B", "Consulting"],
-      results: "25% increase in enterprise clients",
-      client: "ProfessionalCorp",
+      tags: ["Maintenance", "Support", "Monitoring", "Updates"],
+      results: "99.9% uptime achieved",
+      client: "ReliableWeb",
       link: "#"
     },
+
+    // Digital Marketing Services
     {
       id: 8,
-      title: "Analytics Pro Dashboard",
-      category: "web",
-      description: "Advanced analytics dashboard for marketing performance tracking with real-time insights",
-      image: "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=600&h=400&fit=crop",
-      tags: ["Dashboard", "Analytics", "Data Viz", "Real-time"],
-      results: "50% faster decision making",
-      client: "DataDriven Inc.",
+      title: "Social Media Marketing",
+      category: "digital-marketing",
+      description: "Comprehensive social media strategy across multiple platforms with content creation",
+      image: "https://images.unsplash.com/photo-1611262588024-d12430b98920?w=600&h=400&fit=crop",
+      tags: ["Social Media", "Content Creation", "Strategy", "Engagement"],
+      results: "400% increase in social engagement",
+      client: "SocialBrand",
       link: "#"
     },
     {
       id: 9,
-      title: "EmailMaster Automation",
-      category: "marketing",
-      description: "Automated email marketing campaigns with personalization and advanced segmentation",
+      title: "SEO Optimization",
+      category: "digital-marketing",
+      description: "Search engine optimization strategy resulting in top rankings for target keywords",
+      image: "https://images.unsplash.com/photo-1562577309-4932fdd64cd1?w=600&h=400&fit=crop",
+      tags: ["SEO", "Keywords", "Rankings", "Organic Traffic"],
+      results: "500% increase in organic traffic",
+      client: "SearchPro",
+      link: "#"
+    },
+    {
+      id: 10,
+      title: "PPC Campaign Management",
+      category: "digital-marketing",
+      description: "Pay-per-click advertising campaigns with optimized targeting and budget management",
+      image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=600&h=400&fit=crop",
+      tags: ["PPC", "Google Ads", "Targeting", "ROI"],
+      results: "250% ROI on ad spend",
+      client: "AdMax",
+      link: "#"
+    },
+    {
+      id: 11,
+      title: "Email Marketing",
+      category: "digital-marketing",
+      description: "Automated email marketing campaigns with personalization and segmentation",
       image: "https://images.unsplash.com/photo-1500673922987-e212871fec22?w=600&h=400&fit=crop",
-      tags: ["Email Marketing", "Automation", "Personalization", "ROI"],
+      tags: ["Email Marketing", "Automation", "Personalization", "Segmentation"],
       results: "65% open rate, 18% CTR",
-      client: "MarketingPro",
+      client: "EmailPro",
+      link: "#"
+    },
+    {
+      id: 12,
+      title: "Conversion Rate Optimization",
+      category: "digital-marketing",
+      description: "CRO strategy implementation with testing and optimization for maximum conversions",
+      image: "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=600&h=400&fit=crop",
+      tags: ["CRO", "Testing", "Optimization", "Conversions"],
+      results: "180% conversion rate improvement",
+      client: "ConvertMax",
+      link: "#"
+    },
+    {
+      id: 13,
+      title: "Influencer Marketing",
+      category: "digital-marketing",
+      description: "Strategic influencer partnerships and campaign management for brand awareness",
+      image: "https://images.unsplash.com/photo-1611224923853-80b023f02d71?w=600&h=400&fit=crop",
+      tags: ["Influencer", "Partnerships", "Brand Awareness", "Campaigns"],
+      results: "300% increase in brand mentions",
+      client: "InfluenceBrand",
+      link: "#"
+    },
+    {
+      id: 14,
+      title: "Content Marketing Strategy",
+      category: "digital-marketing",
+      description: "Comprehensive content marketing strategy with blog posts, videos, and copywriting",
+      image: "https://images.unsplash.com/photo-1542744094-3a31f272c490?w=600&h=400&fit=crop",
+      tags: ["Content Marketing", "Blog", "Video", "Copywriting"],
+      results: "450% increase in content engagement",
+      client: "ContentKing",
+      link: "#"
+    },
+
+    // AI Agent Services
+    {
+      id: 15,
+      title: "AI Chatbot Development",
+      category: "ai-agent",
+      description: "Custom AI chatbot with natural language processing and automated customer support",
+      image: "https://images.unsplash.com/photo-1485827404703-89b55fcc595e?w=600&h=400&fit=crop",
+      tags: ["AI Chatbot", "NLP", "Customer Support", "Automation"],
+      results: "70% reduction in support tickets",
+      client: "ChatBot Inc.",
+      link: "#"
+    },
+    {
+      id: 16,
+      title: "Virtual Customer Support",
+      category: "ai-agent",
+      description: "24/7 virtual customer support agent with AI-powered response generation",
+      image: "https://images.unsplash.com/photo-1677442136019-21780ecad995?w=600&h=400&fit=crop",
+      tags: ["Virtual Support", "24/7", "AI Responses", "Customer Service"],
+      results: "90% customer satisfaction rate",
+      client: "SupportAI",
+      link: "#"
+    },
+    {
+      id: 17,
+      title: "AI Sales Assistant",
+      category: "ai-agent",
+      description: "Intelligent sales assistant for lead qualification and automated follow-ups",
+      image: "https://images.unsplash.com/photo-1620712943543-bcc4688e7485?w=600&h=400&fit=crop",
+      tags: ["Sales AI", "Lead Qualification", "Follow-ups", "CRM Integration"],
+      results: "300% increase in qualified leads",
+      client: "SalesForce Pro",
+      link: "#"
+    },
+    {
+      id: 18,
+      title: "Voice Assistant Integration",
+      category: "ai-agent",
+      description: "Custom voice assistant integration with Alexa and Google Assistant platforms",
+      image: "https://images.unsplash.com/photo-1589254065878-42c9da997008?w=600&h=400&fit=crop",
+      tags: ["Voice Assistant", "Alexa", "Google", "Voice Commands"],
+      results: "250% increase in user interactions",
+      client: "VoiceTech",
+      link: "#"
+    },
+    {
+      id: 19,
+      title: "AI Lead Qualification",
+      category: "ai-agent",
+      description: "Automated lead scoring and qualification system with machine learning algorithms",
+      image: "https://images.unsplash.com/photo-1507146426996-ef05306b995a?w=600&h=400&fit=crop",
+      tags: ["Lead Scoring", "Machine Learning", "Qualification", "Automation"],
+      results: "85% accuracy in lead scoring",
+      client: "LeadGen AI",
+      link: "#"
+    },
+    {
+      id: 20,
+      title: "Sentiment Analysis Bot",
+      category: "ai-agent",
+      description: "Real-time sentiment analysis for social media monitoring and brand reputation",
+      image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=600&h=400&fit=crop",
+      tags: ["Sentiment Analysis", "Social Monitoring", "Brand Reputation", "Real-time"],
+      results: "95% accuracy in sentiment detection",
+      client: "BrandWatch",
+      link: "#"
+    },
+    {
+      id: 21,
+      title: "Intelligent FAQ System",
+      category: "ai-agent",
+      description: "AI-powered FAQ system with dynamic content generation and smart search",
+      image: "https://images.unsplash.com/photo-1531297484001-80022131f5a1?w=600&h=400&fit=crop",
+      tags: ["FAQ System", "Dynamic Content", "Smart Search", "AI Powered"],
+      results: "60% reduction in support queries",
+      client: "HelpDesk Pro",
       link: "#"
     }
   ];
