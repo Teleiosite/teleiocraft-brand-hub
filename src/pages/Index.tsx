@@ -6,6 +6,27 @@ import { Link } from "react-router-dom";
 import { ArrowDown, Star, Users, Trophy, Clock, CheckCircle, ArrowRight } from "lucide-react";
 
 const Index = () => {
+  const heroSlides = [
+    {
+      image: "https://images.unsplash.com/photo-1461749280684-dccba630e2f6?ixlib=rb-4.0.3&auto=format&fit=crop&w=2426&q=80",
+      title: "Expert Development",
+      subtitle: "Custom web solutions that drive results",
+      description: "Transform your ideas into powerful digital experiences"
+    },
+    {
+      image: "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?ixlib=rb-4.0.3&auto=format&fit=crop&w=2426&q=80",
+      title: "Digital Marketing Excellence",
+      subtitle: "Data-driven strategies for growth",
+      description: "Maximize your online reach and conversions"
+    },
+    {
+      image: "https://images.unsplash.com/photo-1485827404703-89b55fcc595e?ixlib=rb-4.0.3&auto=format&fit=crop&w=2426&q=80",
+      title: "AI-Powered Solutions",
+      subtitle: "Intelligent automation for your business",
+      description: "Leverage cutting-edge AI to streamline operations"
+    }
+  ];
+
   const services = [
     {
       title: "Web Design",
@@ -113,35 +134,46 @@ const Index = () => {
 
   return (
     <div className="min-h-screen">
-      {/* Hero Section */}
-      <section className="relative bg-gradient-to-br from-[#004282] to-[#0056a3] text-white py-20 overflow-hidden">
-        {/* Background overlay with blue tint */}
-        <div className="absolute inset-0 bg-gradient-to-br from-[#004282]/80 to-[#0056a3]/80 z-10"></div>
+      {/* Hero Carousel Section */}
+      <section className="relative h-screen overflow-hidden">
+        <Carousel className="w-full h-full" opts={{ align: "start", loop: true }}>
+          <CarouselContent>
+            {heroSlides.map((slide, index) => (
+              <CarouselItem key={index} className="relative h-screen">
+                {/* Background overlay with blue tint */}
+                <div className="absolute inset-0 bg-gradient-to-br from-[#004282]/80 to-[#0056a3]/80 z-10"></div>
+                
+                {/* Background image */}
+                <div className="absolute inset-0 bg-cover bg-center bg-no-repeat" 
+                     style={{backgroundImage: `url('${slide.image}')`}}></div>
+                
+                <div className="relative z-20 h-full flex items-center justify-center">
+                  <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-white">
+                    <h1 className="text-4xl md:text-6xl font-bold mb-6 animate-fade-in">
+                      {index === 0 ? "Teleiocraft Solutions" : slide.title}
+                    </h1>
+                    <p className="text-xl md:text-2xl mb-4 text-blue-100">
+                      {index === 0 ? "We're your Brand Builders and Growth Partners" : slide.subtitle}
+                    </p>
+                    <p className="text-lg mb-8 text-blue-200 max-w-2xl mx-auto">
+                      {slide.description}
+                    </p>
+                    <div className="flex justify-center">
+                      <Button asChild size="lg" className="bg-white text-[#004282] hover:bg-gray-100 text-lg px-8 py-4 font-semibold">
+                        <Link to="/contact">Book FREE Consultation Today!</Link>
+                      </Button>
+                    </div>
+                  </div>
+                </div>
+              </CarouselItem>
+            ))}
+          </CarouselContent>
+          <CarouselPrevious className="left-4 text-white border-white hover:bg-white hover:text-[#004282]" />
+          <CarouselNext className="right-4 text-white border-white hover:bg-white hover:text-[#004282]" />
+        </Carousel>
         
-        {/* Background image */}
-        <div className="absolute inset-0 bg-cover bg-center bg-no-repeat" 
-             style={{backgroundImage: "url('https://images.unsplash.com/photo-1460925895917-afdab827c52f?ixlib=rb-4.0.3&auto=format&fit=crop&w=2426&q=80')"}}></div>
-        
-        <div className="relative z-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center">
-            <h1 className="text-4xl md:text-6xl font-bold mb-6 animate-fade-in">
-              Teleiocraft Solutions
-            </h1>
-            <p className="text-xl md:text-2xl mb-8 text-blue-100">
-              We're your Brand Builders and Growth Partners
-            </p>
-            <p className="text-lg mb-8 text-blue-200 max-w-2xl mx-auto">
-              Transform your business with our comprehensive digital solutions. From web design to AI services, we help you grow and succeed in the digital world.
-            </p>
-            <div className="flex justify-center">
-              <Button asChild size="lg" className="bg-white text-[#004282] hover:bg-gray-100 text-lg px-8 py-4 font-semibold">
-                <Link to="/contact">Book FREE Consultation Today!</Link>
-              </Button>
-            </div>
-          </div>
-        </div>
-        <div className="relative z-20 text-center mt-12">
-          <ArrowDown className="h-8 w-8 mx-auto animate-bounce text-blue-200" />
+        <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 z-20">
+          <ArrowDown className="h-8 w-8 animate-bounce text-white" />
         </div>
       </section>
 
