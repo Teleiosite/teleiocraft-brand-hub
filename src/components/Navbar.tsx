@@ -43,7 +43,7 @@ const Navbar = () => {
               </Link>
             ))}
             <Button asChild className="bg-[#004282] hover:bg-[#003366] text-white">
-              <Link to="/contact">Get Started</Link>
+              <Link to="/contact">Free Consultation</Link>
             </Button>
           </div>
 
@@ -79,7 +79,7 @@ const Navbar = () => {
                 </Link>
               ))}
               <Button asChild className="w-full mt-2 bg-[#004282] hover:bg-[#003366] text-white">
-                <Link to="/contact" onClick={() => setIsOpen(false)}>Get Started</Link>
+                <Link to="/contact" onClick={() => setIsOpen(false)}>Free Consultation</Link>
               </Button>
             </div>
           </div>

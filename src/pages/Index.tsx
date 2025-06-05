@@ -1,15 +1,16 @@
 
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
+import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
 import { Link } from "react-router-dom";
 import { ArrowDown, Star, Users, Trophy, Clock, CheckCircle, ArrowRight } from "lucide-react";
 
 const Index = () => {
   const services = [
     {
-      title: "Social Media Marketing",
-      description: "Engage your audience and build your brand presence across all platforms.",
-      icon: "📱"
+      title: "Web Design",
+      description: "Beautiful, responsive websites that convert visitors into customers.",
+      icon: "💻"
     },
     {
       title: "Digital Marketing",
@@ -17,14 +18,19 @@ const Index = () => {
       icon: "🎯"
     },
     {
-      title: "Web Design",
-      description: "Beautiful, responsive websites that convert visitors into customers.",
-      icon: "💻"
+      title: "Cloud Computing",
+      description: "Scalable cloud solutions to power your business operations efficiently.",
+      icon: "☁️"
     },
     {
-      title: "Content Creation",
-      description: "Compelling content that tells your story and drives engagement.",
-      icon: "✍️"
+      title: "App Development",
+      description: "Custom mobile and web applications tailored to your business needs.",
+      icon: "📱"
+    },
+    {
+      title: "AI Agent Services",
+      description: "Intelligent AI solutions to automate and enhance your business processes.",
+      icon: "🤖"
     },
     {
       title: "Graphic Design",
@@ -32,8 +38,13 @@ const Index = () => {
       icon: "🎨"
     },
     {
-      title: "App Development",
-      description: "Custom mobile and web applications tailored to your business needs.",
+      title: "Content Creation",
+      description: "Compelling content that tells your story and drives engagement.",
+      icon: "✍️"
+    },
+    {
+      title: "Social Media Marketing",
+      description: "Engage your audience and build your brand presence across all platforms.",
       icon: "📱"
     }
   ];
@@ -79,14 +90,39 @@ const Index = () => {
       company: "E-commerce Plus",
       text: "The best investment we made for our business. Highly recommend their services!",
       rating: 5
+    },
+    {
+      name: "David Kim",
+      company: "StartupLab",
+      text: "Their AI solutions revolutionized our workflow. Incredible expertise and support throughout the project.",
+      rating: 5
+    },
+    {
+      name: "Lisa Thompson",
+      company: "GrowthCorp",
+      text: "Outstanding web design and digital marketing services. Our conversion rates improved by 150%!",
+      rating: 5
+    },
+    {
+      name: "James Wilson",
+      company: "InnovateTech",
+      text: "Teleiocraft's cloud solutions scaled our business seamlessly. Their team is truly exceptional.",
+      rating: 5
     }
   ];
 
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
-      <section className="bg-gradient-to-br from-[#004282] to-[#0056a3] text-white py-20">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="relative bg-gradient-to-br from-[#004282] to-[#0056a3] text-white py-20 overflow-hidden">
+        {/* Background overlay with blue tint */}
+        <div className="absolute inset-0 bg-gradient-to-br from-[#004282]/80 to-[#0056a3]/80 z-10"></div>
+        
+        {/* Background image */}
+        <div className="absolute inset-0 bg-cover bg-center bg-no-repeat" 
+             style={{backgroundImage: "url('https://images.unsplash.com/photo-1460925895917-afdab827c52f?ixlib=rb-4.0.3&auto=format&fit=crop&w=2426&q=80')"}}></div>
+        
+        <div className="relative z-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center">
             <h1 className="text-4xl md:text-6xl font-bold mb-6 animate-fade-in">
               Teleiocraft Solutions
@@ -97,17 +133,14 @@ const Index = () => {
             <p className="text-lg mb-8 text-blue-200 max-w-2xl mx-auto">
               Transform your business with our comprehensive digital solutions. From web design to AI services, we help you grow and succeed in the digital world.
             </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-              <Button asChild size="lg" className="bg-white text-[#004282] hover:bg-gray-100 text-lg px-8 py-3">
-                <Link to="/contact">Start for as low as $120</Link>
-              </Button>
-              <Button asChild variant="outline" size="lg" className="border-white text-white hover:bg-white hover:text-[#004282] text-lg px-8 py-3">
-                <Link to="/services">View Our Services</Link>
+            <div className="flex justify-center">
+              <Button asChild size="lg" className="bg-white text-[#004282] hover:bg-gray-100 text-lg px-8 py-4 font-semibold">
+                <Link to="/contact">Book FREE Consultation Today!</Link>
               </Button>
             </div>
           </div>
         </div>
-        <div className="text-center mt-12">
+        <div className="relative z-20 text-center mt-12">
           <ArrowDown className="h-8 w-8 mx-auto animate-bounce text-blue-200" />
         </div>
       </section>
@@ -124,7 +157,7 @@ const Index = () => {
             </p>
           </div>
           
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             {services.map((service, index) => (
               <Card key={index} className="hover:shadow-lg transition-shadow duration-300 border-0 shadow-md">
                 <CardContent className="p-6 text-center">
@@ -192,25 +225,33 @@ const Index = () => {
             </p>
           </div>
           
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {testimonials.map((testimonial, index) => (
-              <Card key={index} className="border-0 shadow-md">
-                <CardContent className="p-6">
-                  <div className="flex mb-4">
-                    {[...Array(testimonial.rating)].map((_, i) => (
-                      <Star key={i} className="h-5 w-5 text-yellow-400 fill-current" />
-                    ))}
-                  </div>
-                  <p className="text-gray-600 mb-4 italic">
-                    "{testimonial.text}"
-                  </p>
-                  <div>
-                    <p className="font-semibold text-gray-900">{testimonial.name}</p>
-                    <p className="text-sm text-gray-500">{testimonial.company}</p>
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
+          <div className="relative max-w-6xl mx-auto">
+            <Carousel className="w-full" opts={{ align: "start", loop: true }}>
+              <CarouselContent>
+                {testimonials.map((testimonial, index) => (
+                  <CarouselItem key={index} className="md:basis-1/3">
+                    <Card className="border-0 shadow-md h-full">
+                      <CardContent className="p-6 flex flex-col h-full">
+                        <div className="flex mb-4">
+                          {[...Array(testimonial.rating)].map((_, i) => (
+                            <Star key={i} className="h-5 w-5 text-yellow-400 fill-current" />
+                          ))}
+                        </div>
+                        <p className="text-gray-600 mb-4 italic flex-grow">
+                          "{testimonial.text}"
+                        </p>
+                        <div className="mt-auto">
+                          <p className="font-semibold text-gray-900">{testimonial.name}</p>
+                          <p className="text-sm text-gray-500">{testimonial.company}</p>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  </CarouselItem>
+                ))}
+              </CarouselContent>
+              <CarouselPrevious className="hidden md:flex" />
+              <CarouselNext className="hidden md:flex" />
+            </Carousel>
           </div>
         </div>
       </section>
@@ -226,9 +267,9 @@ const Index = () => {
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Button asChild size="lg" className="bg-white text-[#004282] hover:bg-gray-100 text-lg px-8 py-3">
-              <Link to="/contact">Get Started Today</Link>
+              <Link to="/contact#contact-form">Get Started Today</Link>
             </Button>
-            <Button asChild variant="outline" size="lg" className="border-white text-white hover:bg-white hover:text-[#004282] text-lg px-8 py-3">
+            <Button asChild variant="outline" size="lg" className="border-white bg-white/10 text-white hover:bg-white hover:text-[#004282] text-lg px-8 py-3">
               <Link to="/portfolio">View Our Work</Link>
             </Button>
           </div>
