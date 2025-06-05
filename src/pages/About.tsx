@@ -1,7 +1,8 @@
+
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
-import { ArrowRight, Star, Users, Award, Target, Heart, Lightbulb } from "lucide-react";
+import { ArrowRight, Star, Users, Award, Target, Heart, Lightbulb, Globe, Eye } from "lucide-react";
 import { useEffect } from "react";
 
 const About = () => {
