@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -144,7 +145,7 @@ const Contact = () => {
                 <div className="space-y-4">
                   <div className="flex items-center">
                     <Mail className="h-6 w-6 text-[#004282] mr-3" />
-                    <span className="text-gray-600">info@teleiocraft.com</span>
+                    <span className="text-gray-600">TeleiocraftSolutions@gmail.com</span>
                   </div>
                   <div className="flex items-center">
                     <Phone className="h-6 w-6 text-[#004282] mr-3" />
@@ -156,7 +157,7 @@ const Contact = () => {
                   </div>
                   <div className="flex items-center">
                     <MapPin className="h-6 w-6 text-[#004282] mr-3" />
-                    <span className="text-gray-600">New York, NY</span>
+                    <span className="text-gray-600">Greater London, United Kingdom</span>
                   </div>
                 </div>
               </div>
@@ -178,10 +179,37 @@ const Contact = () => {
                   Ready to transform your business? Book a free consultation with our experts.
                 </p>
                 <Button asChild className="bg-[#004282] hover:bg-[#003366] text-white">
-                  <a href="mailto:info@teleiocraft.com">Book Free Consultation</a>
+                  <a href="mailto:TeleiocraftSolutions@gmail.com">Book Free Consultation</a>
                 </Button>
               </div>
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Google Map Section */}
+      <section className="py-20 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+              Find Us
+            </h2>
+            <p className="text-lg text-gray-600">
+              We're located in Greater London, United Kingdom
+            </p>
+          </div>
+          
+          <div className="rounded-lg overflow-hidden shadow-lg">
+            <iframe
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d635194.2098742194!2d-0.8406461975097656!3d51.528771840765326!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47d8a00baf21de75%3A0x52963a5addd52a99!2sLondon%2C%20UK!5e0!3m2!1sen!2sus!4v1640000000000!5m2!1sen!2sus"
+              width="100%"
+              height="450"
+              style={{ border: 0 }}
+              allowFullScreen
+              loading="lazy"
+              referrerPolicy="no-referrer-when-downgrade"
+              title="Our Location in Greater London, United Kingdom"
+            />
           </div>
         </div>
       </section>
