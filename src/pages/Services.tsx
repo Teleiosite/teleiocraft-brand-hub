@@ -174,13 +174,13 @@ const Services = () => {
             {services.map((service, index) => (
               <Card key={index} className={`border-0 shadow-lg hover:shadow-xl transition-all duration-300 relative overflow-hidden bg-white rounded-xl ${service.popular ? 'ring-2 ring-[#004282]' : ''} flex flex-col h-full`}>
                 {service.popular && (
-                  <div className="absolute -top-4 left-1/2 transform -translate-x-1/2 z-10">
+                  <div className="absolute -top-2 left-1/2 transform -translate-x-1/2 z-10 px-6 py-2">
                     <span className="bg-[#004282] text-white px-6 py-3 rounded-full text-sm font-semibold shadow-lg">
                       Most Popular
                     </span>
                   </div>
                 )}
-                <CardHeader className="text-center pb-4 pt-12">
+                <CardHeader className="text-center pb-4 pt-16">
                   <div className="text-5xl mb-4">{service.icon}</div>
                   <CardTitle className="text-xl text-gray-900 mb-6 min-h-[3.5rem] flex items-center justify-center">
                     {service.title}
