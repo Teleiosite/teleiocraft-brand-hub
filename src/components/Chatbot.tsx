@@ -3,7 +3,8 @@ import React, { useState, useRef, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { MessageSquare, X, Send } from "lucide-react";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { MessageSquare, X, Send, Bot, User } from "lucide-react";
 
 interface Message {
   id: number;
@@ -17,79 +18,97 @@ interface ChatRule {
   response: string;
 }
 
+interface QuickReply {
+  text: string;
+  value: string;
+}
+
 const Chatbot = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState<Message[]>([
     {
       id: 1,
-      text: "Hello! I'm your virtual assistant. How can I help you today?",
+      text: "Hello! 👋 I'm your virtual assistant. How can I help you today?",
       isBot: true,
       timestamp: new Date()
     }
   ]);
   const [inputValue, setInputValue] = useState("");
+  const [isTyping, setIsTyping] = useState(false);
+  const [showQuickReplies, setShowQuickReplies] = useState(true);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+
+  const quickReplies: QuickReply[] = [
+    { text: "🌐 Our Services", value: "services" },
+    { text: "💰 Pricing", value: "pricing" },
+    { text: "📞 Contact Us", value: "contact" },
+    { text: "👥 About Team", value: "about" }
+  ];
 
   const chatRules: ChatRule[] = [
     {
       keywords: ["hello", "hi", "hey", "greetings"],
-      response: "Hello! Welcome to Teleiocraft Solutions. I'm here to help you with any questions about our services. What can I assist you with today?"
+      response: "Hello! 😊 Welcome to Teleiocraft Solutions. I'm here to help you with any questions about our services. What can I assist you with today?"
     },
     {
       keywords: ["services", "what do you do", "offerings"],
-      response: "We offer a wide range of digital services including Web Design, Digital Marketing, Cloud Computing, App Development, AI Agent Services, Graphic Design, Content Creation, and Social Media Marketing. Which service interests you most?"
+      response: "We offer a comprehensive range of digital services including:\n\n🌐 Web Design & Development\n📱 Mobile App Development\n☁️ Cloud Computing Solutions\n🤖 AI Agent Services\n🎨 Graphic Design\n📈 Digital Marketing\n📝 Content Creation\n📱 Social Media Marketing\n\nWhich service interests you most? 🤔"
     },
     {
       keywords: ["web design", "website", "landing page"],
-      response: "Our web design services include custom website development, responsive design, landing page optimization, and SEO-ready structure. We create beautiful, high-converting websites that represent your brand professionally."
+      response: "Our web design services include:\n\n✨ Custom website development\n📱 Responsive design for all devices\n🎯 Landing page optimization\n🔍 SEO-ready structure\n🎨 Beautiful, professional designs\n\nWe create high-converting websites that represent your brand perfectly! 🚀"
     },
     {
       keywords: ["digital marketing", "marketing", "seo", "ppc"],
-      response: "Our digital marketing services include SEO optimization, PPC advertising, email marketing, conversion optimization, and performance tracking. We help maximize your online reach and conversions."
+      response: "Our digital marketing expertise covers:\n\n🔍 SEO optimization\n💰 PPC advertising\n📧 Email marketing campaigns\n📊 Conversion optimization\n📈 Performance tracking & analytics\n\nWe help maximize your online reach and boost conversions! 📊"
     },
     {
       keywords: ["ai", "artificial intelligence", "automation", "chatbot"],
-      response: "We offer AI Agent Services including chatbot development, process automation, data analysis, machine learning models, and custom AI solutions to enhance your business processes."
+      response: "Our AI Agent Services include:\n\n🤖 Custom chatbot development\n⚙️ Process automation\n📊 Data analysis & insights\n🧠 Machine learning models\n🔧 Custom AI solutions\n\nWe enhance your business processes with cutting-edge AI technology! ⚡"
     },
     {
       keywords: ["app", "mobile", "development", "application"],
-      response: "We develop custom mobile and web applications for iOS, Android, and web platforms. Our services include API development, database design, testing, deployment, and post-launch support."
+      response: "We develop powerful applications for:\n\n📱 iOS platforms\n🤖 Android platforms\n💻 Web applications\n🔌 API development\n🗄️ Database design\n🧪 Testing & deployment\n🛠️ Post-launch support\n\nLet's bring your app idea to life! 🚀"
     },
     {
       keywords: ["cloud", "cloud computing", "infrastructure"],
-      response: "Our cloud computing services include cloud migration, infrastructure setup, security implementation, performance monitoring, cost optimization, and 24/7 support."
+      response: "Our cloud computing services include:\n\n☁️ Cloud migration strategies\n🏗️ Infrastructure setup\n🔒 Security implementation\n📊 Performance monitoring\n💰 Cost optimization\n🔧 24/7 support\n\nSecure, scalable, and reliable cloud solutions! ⚡"
     },
     {
       keywords: ["price", "pricing", "cost", "how much"],
-      response: "Our pricing varies depending on the specific services and project requirements. We offer customized solutions for every business. Contact us for a free consultation and personalized quote!"
+      response: "Our pricing is customized based on your specific needs! 💰\n\n✨ We offer competitive rates\n🎯 Tailored solutions for every budget\n📞 Free initial consultation\n📊 Detailed project quotes\n\nContact us for a personalized quote - let's discuss your project! 🤝"
     },
     {
       keywords: ["contact", "get in touch", "reach you", "phone", "email"],
-      response: "You can reach us at TeleiocraftSolutions@gmail.com or visit our Contact page to send us a message. We're located in Greater London, United Kingdom. We'd love to hear from you!"
+      response: "Ready to connect? Here's how to reach us: 📞\n\n📧 Email: TeleiocraftSolutions@gmail.com\n📍 Location: Greater London, United Kingdom\n💬 Or use our Contact page\n\n🆓 Book a FREE consultation today! We'd love to hear about your project. ✨"
     },
     {
       keywords: ["team", "about", "who are you", "company"],
-      response: "Teleiocraft Solutions is your Brand Builder and Growth Partner. We're a team of 6 experienced professionals dedicated to helping businesses grow through innovative digital solutions. Check out our About page to learn more about our team!"
+      response: "We're Teleiocraft Solutions - your Brand Builder and Growth Partner! 🚀\n\n👥 Team of 6 experienced professionals\n🎯 Dedicated to helping businesses grow\n💡 Innovative digital solutions\n🏆 Proven track record of success\n\nCheck out our About page to meet the team! 👋"
     },
     {
       keywords: ["portfolio", "work", "examples", "projects"],
-      response: "We've successfully completed numerous projects across various industries. Visit our Portfolio page to see examples of our work and client testimonials. We're proud of the results we've achieved for our clients!"
+      response: "We're proud of our work! 🏆\n\n✅ Successful projects across various industries\n💼 Diverse portfolio of solutions\n⭐ Happy client testimonials\n📈 Proven results\n\nVisit our Portfolio page to see examples of our work and what our clients say! 🌟"
     },
     {
       keywords: ["consultation", "free consultation", "meeting"],
-      response: "Yes! We offer free consultations to discuss your project needs and how we can help. Click on 'Book FREE Consultation Today!' or contact us through our Contact page to schedule your consultation."
+      response: "Yes! We offer FREE consultations! 🎉\n\n📅 Schedule a consultation to discuss your needs\n💡 Get expert advice on your project\n🎯 Learn how we can help you grow\n📞 No commitment required\n\nClick 'Book FREE Consultation Today!' or contact us to get started! ✨"
     },
     {
       keywords: ["support", "help", "assistance", "maintenance"],
-      response: "We provide ongoing support and maintenance for all our services. Our team offers 24/7 support to ensure your success. We're committed to your long-term growth and satisfaction."
+      response: "We're here for you every step of the way! 🤝\n\n🔧 Ongoing support & maintenance\n⏰ 24/7 assistance available\n📈 Long-term growth partnership\n✅ Committed to your success\n\nYour success is our priority! 🌟"
     },
     {
       keywords: ["thank", "thanks", "appreciate"],
-      response: "You're very welcome! Is there anything else I can help you with today? Feel free to ask about any of our services or contact us for more detailed information."
+      response: "You're very welcome! 😊 Is there anything else I can help you with today? Feel free to ask about any of our services or contact us for more detailed information! ✨"
     },
     {
       keywords: ["bye", "goodbye", "see you", "later"],
-      response: "Thank you for visiting Teleiocraft Solutions! Feel free to reach out anytime if you have more questions. Have a great day!"
+      response: "Thank you for visiting Teleiocraft Solutions! 👋 Feel free to reach out anytime if you have more questions. Have a wonderful day! 🌟"
+    },
+    {
+      keywords: ["human", "talk to human", "real person"],
+      response: "I'd be happy to connect you with our team! 👥\n\n📧 Email us at: TeleiocraftSolutions@gmail.com\n📝 Use our Contact page for detailed inquiries\n📅 Book a FREE consultation\n\nOur human experts are ready to help with your specific needs! 🤝"
     }
   ];
 
@@ -106,32 +125,40 @@ const Chatbot = () => {
       }
     }
     
-    return "I'm sorry, I didn't quite understand that. Could you please rephrase your question? You can ask me about our services, pricing, contact information, or anything else about Teleiocraft Solutions!";
+    return "I'm sorry, I didn't quite understand that. 🤔 Could you please rephrase your question? You can ask me about our services, pricing, contact information, or anything else about Teleiocraft Solutions! ✨";
   };
 
-  const handleSendMessage = () => {
-    if (!inputValue.trim()) return;
+  const handleSendMessage = (messageText?: string) => {
+    const textToSend = messageText || inputValue;
+    if (!textToSend.trim()) return;
 
     const userMessage: Message = {
       id: messages.length + 1,
-      text: inputValue,
+      text: textToSend,
       isBot: false,
       timestamp: new Date()
     };
 
     setMessages(prev => [...prev, userMessage]);
     setInputValue("");
+    setShowQuickReplies(false);
+    setIsTyping(true);
 
-    // Bot response after a short delay
+    // Bot response after a typing delay
     setTimeout(() => {
       const botResponse: Message = {
         id: messages.length + 2,
-        text: findBestResponse(inputValue),
+        text: findBestResponse(textToSend),
         isBot: true,
         timestamp: new Date()
       };
       setMessages(prev => [...prev, botResponse]);
-    }, 1000);
+      setIsTyping(false);
+    }, 1500);
+  };
+
+  const handleQuickReply = (value: string) => {
+    handleSendMessage(value);
   };
 
   const handleKeyPress = (e: React.KeyboardEvent) => {
@@ -142,7 +169,19 @@ const Chatbot = () => {
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [messages]);
+  }, [messages, isTyping]);
+
+  const TypingIndicator = () => (
+    <div className="flex justify-start mb-3">
+      <div className="bg-gray-100 p-3 rounded-2xl rounded-bl-md max-w-[80%]">
+        <div className="flex space-x-1">
+          <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"></div>
+          <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0.1s' }}></div>
+          <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></div>
+        </div>
+      </div>
+    </div>
+  );
 
   return (
     <>
@@ -150,24 +189,34 @@ const Chatbot = () => {
       {!isOpen && (
         <Button
           onClick={() => setIsOpen(true)}
-          className="fixed bottom-6 right-6 z-50 w-14 h-14 rounded-full bg-[#004282] hover:bg-[#003366] shadow-lg"
+          className="fixed bottom-6 right-6 z-50 w-16 h-16 rounded-full bg-gradient-to-r from-[#004282] to-[#0056b3] hover:from-[#003366] hover:to-[#004282] shadow-xl hover:shadow-2xl transform hover:scale-105 transition-all duration-300 animate-pulse"
           size="lg"
         >
-          <MessageSquare className="h-6 w-6 text-white" />
+          <MessageSquare className="h-7 w-7 text-white" />
         </Button>
       )}
 
       {/* Chat Window */}
       {isOpen && (
-        <Card className="fixed bottom-6 right-6 z-50 w-80 h-96 shadow-2xl border-0">
-          <CardHeader className="bg-[#004282] text-white rounded-t-lg py-3">
+        <Card className="fixed bottom-6 right-6 z-50 w-80 sm:w-96 h-[500px] shadow-2xl border-0 rounded-2xl overflow-hidden animate-scale-in">
+          <CardHeader className="bg-gradient-to-r from-[#004282] to-[#0056b3] text-white p-4">
             <div className="flex justify-between items-center">
-              <CardTitle className="text-lg">Teleiocraft Assistant</CardTitle>
+              <div className="flex items-center space-x-3">
+                <Avatar className="w-8 h-8">
+                  <AvatarFallback className="bg-white/20 text-white">
+                    <Bot className="h-4 w-4" />
+                  </AvatarFallback>
+                </Avatar>
+                <div>
+                  <CardTitle className="text-lg font-semibold">Teleiocraft Assistant</CardTitle>
+                  <p className="text-xs text-white/80">Always here to help 💬</p>
+                </div>
+              </div>
               <Button
                 variant="ghost"
                 size="sm"
                 onClick={() => setIsOpen(false)}
-                className="text-white hover:bg-white/10 p-1 h-8 w-8"
+                className="text-white hover:bg-white/10 p-2 h-8 w-8 rounded-full"
               >
                 <X className="h-4 w-4" />
               </Button>
@@ -176,42 +225,86 @@ const Chatbot = () => {
           
           <CardContent className="flex flex-col h-full p-0">
             {/* Messages Area */}
-            <div className="flex-1 overflow-y-auto p-4 space-y-3">
+            <div className="flex-1 overflow-y-auto p-4 space-y-3 bg-gray-50">
               {messages.map((message) => (
                 <div
                   key={message.id}
                   className={`flex ${message.isBot ? 'justify-start' : 'justify-end'}`}
                 >
-                  <div
-                    className={`max-w-[80%] p-3 rounded-lg ${
-                      message.isBot
-                        ? 'bg-gray-100 text-gray-800'
-                        : 'bg-[#004282] text-white'
-                    }`}
-                  >
-                    <p className="text-sm">{message.text}</p>
+                  <div className={`flex items-start space-x-2 max-w-[85%] ${message.isBot ? '' : 'flex-row-reverse space-x-reverse'}`}>
+                    <Avatar className="w-6 h-6 flex-shrink-0">
+                      <AvatarFallback className={`text-xs ${message.isBot ? 'bg-blue-100 text-blue-600' : 'bg-gray-200 text-gray-600'}`}>
+                        {message.isBot ? <Bot className="h-3 w-3" /> : <User className="h-3 w-3" />}
+                      </AvatarFallback>
+                    </Avatar>
+                    <div
+                      className={`p-3 rounded-2xl shadow-sm ${
+                        message.isBot
+                          ? 'bg-white text-gray-800 rounded-bl-md border border-gray-100'
+                          : 'bg-gradient-to-r from-[#004282] to-[#0056b3] text-white rounded-br-md'
+                      }`}
+                    >
+                      <p className="text-sm leading-relaxed whitespace-pre-line">{message.text}</p>
+                    </div>
                   </div>
                 </div>
               ))}
+              
+              {isTyping && <TypingIndicator />}
+              
+              {/* Quick Reply Buttons */}
+              {showQuickReplies && messages.length === 1 && (
+                <div className="space-y-2">
+                  <p className="text-xs text-gray-500 text-center">Quick suggestions:</p>
+                  <div className="flex flex-wrap gap-2">
+                    {quickReplies.map((reply, index) => (
+                      <Button
+                        key={index}
+                        variant="outline"
+                        size="sm"
+                        onClick={() => handleQuickReply(reply.value)}
+                        className="text-xs bg-white hover:bg-[#004282] hover:text-white border-[#004282]/20 rounded-full transition-all duration-200"
+                      >
+                        {reply.text}
+                      </Button>
+                    ))}
+                  </div>
+                </div>
+              )}
+              
               <div ref={messagesEndRef} />
             </div>
 
             {/* Input Area */}
-            <div className="border-t p-4">
+            <div className="border-t bg-white p-4">
               <div className="flex gap-2">
                 <Input
                   value={inputValue}
                   onChange={(e) => setInputValue(e.target.value)}
                   onKeyPress={handleKeyPress}
-                  placeholder="Type your message..."
-                  className="flex-1"
+                  placeholder="Type your message... 💬"
+                  className="flex-1 rounded-full border-gray-200 focus:border-[#004282] focus:ring-[#004282]/20"
+                  disabled={isTyping}
                 />
                 <Button
-                  onClick={handleSendMessage}
-                  className="bg-[#004282] hover:bg-[#003366]"
+                  onClick={() => handleSendMessage()}
+                  disabled={!inputValue.trim() || isTyping}
+                  className="bg-gradient-to-r from-[#004282] to-[#0056b3] hover:from-[#003366] hover:to-[#004282] rounded-full w-10 h-10 p-0 shadow-md hover:shadow-lg transition-all duration-200"
                   size="sm"
                 >
                   <Send className="h-4 w-4" />
+                </Button>
+              </div>
+              
+              {/* Talk to Human Option */}
+              <div className="mt-3 text-center">
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => handleSendMessage("talk to human")}
+                  className="text-xs text-gray-500 hover:text-[#004282] transition-colors duration-200"
+                >
+                  💬 Need to talk to a human?
                 </Button>
               </div>
             </div>
