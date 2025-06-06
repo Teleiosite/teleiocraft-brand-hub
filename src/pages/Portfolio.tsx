@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -632,6 +631,45 @@ const Portfolio = () => {
     }
   ];
 
+  const team = [
+    {
+      name: "Alex Johnson",
+      role: "CEO & Founder",
+      image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=300&h=300&fit=crop&crop=face",
+      bio: "Visionary leader with 10+ years in digital transformation"
+    },
+    {
+      name: "Sarah Chen",
+      role: "Creative Director",
+      image: "https://images.unsplash.com/photo-1494790108755-2616b612b786?w=300&h=300&fit=crop&crop=face",
+      bio: "Award-winning designer passionate about brand storytelling"
+    },
+    {
+      name: "Michael Rodriguez",
+      role: "Technical Lead",
+      image: "https://images.unsplash.com/photo-1519244703995-f4e0f30006d5?w=300&h=300&fit=crop&crop=face",
+      bio: "Full-stack developer and AI technology enthusiast"
+    },
+    {
+      name: "Emily Davis",
+      role: "Marketing Strategist",
+      image: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=300&h=300&fit=crop&crop=face",
+      bio: "Data-driven marketer focused on ROI and growth"
+    },
+    {
+      name: "David Wilson",
+      role: "Cloud Solutions Architect",
+      image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=300&h=300&fit=crop&crop=face",
+      bio: "Expert in cloud infrastructure and DevOps automation"
+    },
+    {
+      name: "Lisa Thompson",
+      role: "Mobile App Developer",
+      image: "https://images.unsplash.com/photo-1494790108755-2616b612b786?w=300&h=300&fit=crop&crop=face",
+      bio: "Specialist in iOS/Android development and UX design"
+    }
+  ];
+
   const filteredProjects = activeFilter === "all" 
     ? projects 
     : projects.filter(project => project.category === activeFilter);
@@ -854,6 +892,43 @@ const Portfolio = () => {
               ))}
             </CarouselContent>
           </Carousel>
+        </div>
+      </section>
+
+      {/* Team Section */}
+      <section className="py-20 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+              Meet Our Expert Team
+            </h2>
+            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+              The talented professionals behind every successful project
+            </p>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {team.map((member, index) => (
+              <Card key={index} className="border-0 shadow-md hover:shadow-lg transition-shadow duration-300 bg-white">
+                <CardContent className="p-6 text-center">
+                  <img
+                    src={member.image}
+                    alt={member.name}
+                    className="w-24 h-24 rounded-full mx-auto mb-4 object-cover"
+                  />
+                  <h3 className="text-xl font-semibold text-gray-900 mb-1">
+                    {member.name}
+                  </h3>
+                  <p className="text-[#004282] font-medium mb-3">
+                    {member.role}
+                  </p>
+                  <p className="text-gray-600 text-sm">
+                    {member.bio}
+                  </p>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
         </div>
       </section>
 
