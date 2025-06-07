@@ -31,26 +31,26 @@ const ChatInput = ({ value, onChange, onSend, onKeyPress, isTyping, onHumanTalk 
   };
 
   return (
-    <div className="border-t bg-white p-4">
+    <div className="border-t bg-white p-4 pb-6">
       <div className="flex gap-3 items-end">
-        <div className="flex-1">
+        <div className="flex-1 relative">
           <Textarea
             value={value}
             onChange={handleTextareaChange}
             onKeyPress={handleKeyPress}
-            placeholder="Type your message... 💬"
-            className="min-h-[80px] max-h-[120px] resize-none rounded-xl border-gray-200 focus:border-[#004282] focus:ring-[#004282]/20 p-4 text-sm leading-relaxed shadow-sm transition-all duration-200"
+            placeholder="Type your message..."
+            className="min-h-[50px] max-h-[120px] resize-none rounded-full border-gray-300 focus:border-[#004282] focus:ring-[#004282]/20 px-4 py-3 text-sm leading-relaxed shadow-sm transition-all duration-200 border-2"
             disabled={isTyping}
-            rows={3}
+            rows={1}
           />
         </div>
         <Button
           onClick={onSend}
           disabled={!value.trim() || isTyping}
-          className="bg-gradient-to-r from-[#004282] to-[#0056b3] hover:from-[#003366] hover:to-[#004282] rounded-xl w-12 h-12 p-0 shadow-md hover:shadow-lg transition-all duration-200 flex-shrink-0"
+          className="bg-gradient-to-r from-[#004282] to-[#0056b3] hover:from-[#003366] hover:to-[#004282] rounded-full w-11 h-11 p-0 shadow-md hover:shadow-lg transition-all duration-200 flex-shrink-0"
           size="sm"
         >
-          <Send className="h-5 w-5" />
+          <Send className="h-4 w-4" />
         </Button>
       </div>
       

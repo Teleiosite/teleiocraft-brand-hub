@@ -28,7 +28,7 @@ const ChatHeader = ({ onClose }: ChatHeaderProps) => {
           variant="ghost"
           size="sm"
           onClick={onClose}
-          className="text-white hover:bg-white/20 hover:shadow-md p-2 h-8 w-8 rounded-full transition-all duration-200 hover:scale-110 flex-shrink-0 z-10"
+          className="text-white hover:bg-white/20 hover:shadow-md p-2 h-8 w-8 rounded-full transition-all duration-200 hover:scale-110 flex-shrink-0 absolute top-4 right-4 z-20"
         >
           <X className="h-4 w-4" />
         </Button>
