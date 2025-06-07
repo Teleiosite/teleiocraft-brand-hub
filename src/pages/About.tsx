@@ -1,4 +1,3 @@
-
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
@@ -58,6 +57,18 @@ const About = () => {
       role: "Marketing Strategist",
       image: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=300&h=300&fit=crop&crop=face",
       bio: "Data-driven marketer focused on ROI and growth"
+    },
+    {
+      name: "David Thompson",
+      role: "UX/UI Designer",
+      image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=300&h=300&fit=crop&crop=face",
+      bio: "User experience expert creating intuitive digital solutions"
+    },
+    {
+      name: "Lisa Wang",
+      role: "Project Manager",
+      image: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=300&h=300&fit=crop&crop=face",
+      bio: "Agile methodology expert ensuring seamless project delivery"
     }
   ];
 
@@ -214,7 +225,7 @@ const About = () => {
             </p>
           </div>
           
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {team.map((member, index) => (
               <Card key={index} className="border-0 shadow-md hover:shadow-lg transition-shadow duration-300">
                 <CardContent className="p-6 text-center">
