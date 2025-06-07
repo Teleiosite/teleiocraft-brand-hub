@@ -1,10 +1,11 @@
-
 import React, { useState, useRef, useEffect } from 'react';
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
-import { MessageSquare, X, Send, Bot, User } from "lucide-react";
+import { Card, CardContent } from "@/components/ui/card";
+import ChatButton from './chatbot/ChatButton';
+import ChatHeader from './chatbot/ChatHeader';
+import ChatMessage from './chatbot/ChatMessage';
+import ChatInput from './chatbot/ChatInput';
+import TypingIndicator from './chatbot/TypingIndicator';
+import QuickReplies from './chatbot/QuickReplies';
 
 interface Message {
   id: number;
@@ -167,147 +168,52 @@ const Chatbot = () => {
     }
   };
 
+  const handleHumanTalk = () => {
+    handleSendMessage("talk to human");
+  };
+
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages, isTyping]);
-
-  const TypingIndicator = () => (
-    <div className="flex justify-start mb-3">
-      <div className="bg-gray-100 p-3 rounded-2xl rounded-bl-md max-w-[80%]">
-        <div className="flex space-x-1">
-          <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"></div>
-          <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0.1s' }}></div>
-          <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></div>
-        </div>
-      </div>
-    </div>
-  );
 
   return (
     <>
       {/* Chat Toggle Button */}
       {!isOpen && (
-        <Button
-          onClick={() => setIsOpen(true)}
-          className="fixed bottom-6 right-6 z-50 w-16 h-16 rounded-full bg-gradient-to-r from-[#004282] to-[#0056b3] hover:from-[#003366] hover:to-[#004282] shadow-xl hover:shadow-2xl transform hover:scale-105 transition-all duration-300 animate-pulse"
-          size="lg"
-        >
-          <MessageSquare className="h-7 w-7 text-white" />
-        </Button>
+        <ChatButton onClick={() => setIsOpen(true)} />
       )}
 
       {/* Chat Window */}
       {isOpen && (
         <Card className="fixed bottom-6 right-6 z-50 w-80 sm:w-96 h-[500px] shadow-2xl border-0 rounded-2xl overflow-hidden animate-scale-in">
-          <CardHeader className="bg-gradient-to-r from-[#004282] to-[#0056b3] text-white p-4">
-            <div className="flex justify-between items-center">
-              <div className="flex items-center space-x-3">
-                <Avatar className="w-8 h-8">
-                  <AvatarFallback className="bg-white/20 text-white">
-                    <Bot className="h-4 w-4" />
-                  </AvatarFallback>
-                </Avatar>
-                <div>
-                  <CardTitle className="text-lg font-semibold">Teleiocraft Assistant</CardTitle>
-                  <p className="text-xs text-white/80">Always here to help 💬</p>
-                </div>
-              </div>
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={() => setIsOpen(false)}
-                className="text-white hover:bg-white/10 p-2 h-8 w-8 rounded-full"
-              >
-                <X className="h-4 w-4" />
-              </Button>
-            </div>
-          </CardHeader>
+          <ChatHeader onClose={() => setIsOpen(false)} />
           
           <CardContent className="flex flex-col h-full p-0">
             {/* Messages Area */}
             <div className="flex-1 overflow-y-auto p-4 space-y-3 bg-gray-50">
               {messages.map((message) => (
-                <div
-                  key={message.id}
-                  className={`flex ${message.isBot ? 'justify-start' : 'justify-end'}`}
-                >
-                  <div className={`flex items-start space-x-2 max-w-[85%] ${message.isBot ? '' : 'flex-row-reverse space-x-reverse'}`}>
-                    <Avatar className="w-6 h-6 flex-shrink-0">
-                      <AvatarFallback className={`text-xs ${message.isBot ? 'bg-blue-100 text-blue-600' : 'bg-gray-200 text-gray-600'}`}>
-                        {message.isBot ? <Bot className="h-3 w-3" /> : <User className="h-3 w-3" />}
-                      </AvatarFallback>
-                    </Avatar>
-                    <div
-                      className={`p-3 rounded-2xl shadow-sm ${
-                        message.isBot
-                          ? 'bg-white text-gray-800 rounded-bl-md border border-gray-100'
-                          : 'bg-gradient-to-r from-[#004282] to-[#0056b3] text-white rounded-br-md'
-                      }`}
-                    >
-                      <p className="text-sm leading-relaxed whitespace-pre-line">{message.text}</p>
-                    </div>
-                  </div>
-                </div>
+                <ChatMessage key={message.id} message={message} />
               ))}
               
               {isTyping && <TypingIndicator />}
               
               {/* Quick Reply Buttons */}
               {showQuickReplies && messages.length === 1 && (
-                <div className="space-y-2">
-                  <p className="text-xs text-gray-500 text-center">Quick suggestions:</p>
-                  <div className="flex flex-wrap gap-2">
-                    {quickReplies.map((reply, index) => (
-                      <Button
-                        key={index}
-                        variant="outline"
-                        size="sm"
-                        onClick={() => handleQuickReply(reply.value)}
-                        className="text-xs bg-white hover:bg-[#004282] hover:text-white border-[#004282]/20 rounded-full transition-all duration-200"
-                      >
-                        {reply.text}
-                      </Button>
-                    ))}
-                  </div>
-                </div>
+                <QuickReplies replies={quickReplies} onReplyClick={handleQuickReply} />
               )}
               
               <div ref={messagesEndRef} />
             </div>
 
             {/* Input Area */}
-            <div className="border-t bg-white p-4">
-              <div className="flex gap-2">
-                <Input
-                  value={inputValue}
-                  onChange={(e) => setInputValue(e.target.value)}
-                  onKeyPress={handleKeyPress}
-                  placeholder="Type your message... 💬"
-                  className="flex-1 rounded-full border-gray-200 focus:border-[#004282] focus:ring-[#004282]/20"
-                  disabled={isTyping}
-                />
-                <Button
-                  onClick={() => handleSendMessage()}
-                  disabled={!inputValue.trim() || isTyping}
-                  className="bg-gradient-to-r from-[#004282] to-[#0056b3] hover:from-[#003366] hover:to-[#004282] rounded-full w-10 h-10 p-0 shadow-md hover:shadow-lg transition-all duration-200"
-                  size="sm"
-                >
-                  <Send className="h-4 w-4" />
-                </Button>
-              </div>
-              
-              {/* Talk to Human Option */}
-              <div className="mt-3 text-center">
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  onClick={() => handleSendMessage("talk to human")}
-                  className="text-xs text-gray-500 hover:text-[#004282] transition-colors duration-200"
-                >
-                  💬 Need to talk to a human?
-                </Button>
-              </div>
-            </div>
+            <ChatInput
+              value={inputValue}
+              onChange={setInputValue}
+              onSend={handleSendMessage}
+              onKeyPress={handleKeyPress}
+              isTyping={isTyping}
+              onHumanTalk={handleHumanTalk}
+            />
           </CardContent>
         </Card>
       )}
