@@ -213,6 +213,7 @@ const Chatbot = () => {
               onKeyPress={handleKeyPress}
               isTyping={isTyping}
               onHumanTalk={handleHumanTalk}
+              onClose={() => setIsOpen(false)}
             />
           </CardContent>
         </Card>

@@ -2,7 +2,7 @@
 import React from 'react';
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
-import { Send } from "lucide-react";
+import { Send, X } from "lucide-react";
 
 interface ChatInputProps {
   value: string;
@@ -11,9 +11,10 @@ interface ChatInputProps {
   onKeyPress: (e: React.KeyboardEvent) => void;
   isTyping: boolean;
   onHumanTalk: () => void;
+  onClose: () => void;
 }
 
-const ChatInput = ({ value, onChange, onSend, onKeyPress, isTyping, onHumanTalk }: ChatInputProps) => {
+const ChatInput = ({ value, onChange, onSend, onKeyPress, isTyping, onHumanTalk, onClose }: ChatInputProps) => {
   const handleTextareaChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const textarea = e.target;
     onChange(textarea.value);
@@ -31,7 +32,7 @@ const ChatInput = ({ value, onChange, onSend, onKeyPress, isTyping, onHumanTalk 
   };
 
   return (
-    <div className="border-t bg-white p-4 pb-6">
+    <div className="border-t bg-white p-4 pb-8">
       <div className="flex gap-3 items-end">
         <div className="flex-1 relative">
           <Textarea
@@ -39,7 +40,7 @@ const ChatInput = ({ value, onChange, onSend, onKeyPress, isTyping, onHumanTalk 
             onChange={handleTextareaChange}
             onKeyPress={handleKeyPress}
             placeholder="Type your message..."
-            className="min-h-[50px] max-h-[120px] resize-none rounded-full border-gray-300 focus:border-[#004282] focus:ring-[#004282]/20 px-4 py-3 text-sm leading-relaxed shadow-sm transition-all duration-200 border-2"
+            className="min-h-[50px] max-h-[120px] resize-none rounded-full border-gray-300 focus:border-[#004282] focus:ring-[#004282]/20 px-4 py-4 pb-6 text-sm leading-relaxed shadow-sm transition-all duration-200 border-2"
             disabled={isTyping}
             rows={1}
           />
@@ -54,15 +55,25 @@ const ChatInput = ({ value, onChange, onSend, onKeyPress, isTyping, onHumanTalk 
         </Button>
       </div>
       
-      {/* Talk to Human Option */}
-      <div className="mt-3 text-center">
+      {/* Talk to Human Option and Close Button */}
+      <div className="mt-3 flex justify-between items-center">
+        <div className="flex-1 text-center">
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={onHumanTalk}
+            className="text-xs text-gray-500 hover:text-[#004282] transition-colors duration-200"
+          >
+            💬 Need to talk to a human?
+          </Button>
+        </div>
         <Button
           variant="ghost"
           size="sm"
-          onClick={onHumanTalk}
-          className="text-xs text-gray-500 hover:text-[#004282] transition-colors duration-200"
+          onClick={onClose}
+          className="text-gray-400 hover:text-gray-600 hover:bg-gray-100 p-2 h-8 w-8 rounded-full transition-all duration-200 flex-shrink-0"
         >
-          💬 Need to talk to a human?
+          <X className="h-4 w-4" />
         </Button>
       </div>
     </div>
