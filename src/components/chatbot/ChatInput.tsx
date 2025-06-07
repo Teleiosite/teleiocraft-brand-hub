@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
 import { Send } from "lucide-react";
 
 interface ChatInputProps {
@@ -14,24 +14,43 @@ interface ChatInputProps {
 }
 
 const ChatInput = ({ value, onChange, onSend, onKeyPress, isTyping, onHumanTalk }: ChatInputProps) => {
+  const handleTextareaChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    const textarea = e.target;
+    onChange(textarea.value);
+    
+    // Auto-resize functionality
+    textarea.style.height = 'auto';
+    textarea.style.height = Math.min(textarea.scrollHeight, 120) + 'px';
+  };
+
+  const handleKeyPress = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
+      onSend();
+    }
+  };
+
   return (
     <div className="border-t bg-white p-4">
-      <div className="flex gap-2">
-        <Input
-          value={value}
-          onChange={(e) => onChange(e.target.value)}
-          onKeyPress={onKeyPress}
-          placeholder="Type your message... 💬"
-          className="flex-1 rounded-full border-gray-200 focus:border-[#004282] focus:ring-[#004282]/20"
-          disabled={isTyping}
-        />
+      <div className="flex gap-3 items-end">
+        <div className="flex-1">
+          <Textarea
+            value={value}
+            onChange={handleTextareaChange}
+            onKeyPress={handleKeyPress}
+            placeholder="Type your message... 💬"
+            className="min-h-[80px] max-h-[120px] resize-none rounded-xl border-gray-200 focus:border-[#004282] focus:ring-[#004282]/20 p-4 text-sm leading-relaxed shadow-sm transition-all duration-200"
+            disabled={isTyping}
+            rows={3}
+          />
+        </div>
         <Button
           onClick={onSend}
           disabled={!value.trim() || isTyping}
-          className="bg-gradient-to-r from-[#004282] to-[#0056b3] hover:from-[#003366] hover:to-[#004282] rounded-full w-10 h-10 p-0 shadow-md hover:shadow-lg transition-all duration-200"
+          className="bg-gradient-to-r from-[#004282] to-[#0056b3] hover:from-[#003366] hover:to-[#004282] rounded-xl w-12 h-12 p-0 shadow-md hover:shadow-lg transition-all duration-200 flex-shrink-0"
           size="sm"
         >
-          <Send className="h-4 w-4" />
+          <Send className="h-5 w-5" />
         </Button>
       </div>
       

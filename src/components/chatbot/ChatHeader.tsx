@@ -11,7 +11,7 @@ interface ChatHeaderProps {
 
 const ChatHeader = ({ onClose }: ChatHeaderProps) => {
   return (
-    <CardHeader className="bg-gradient-to-r from-[#004282] to-[#0056b3] text-white p-4">
+    <CardHeader className="bg-gradient-to-r from-[#004282] to-[#0056b3] text-white p-4 relative">
       <div className="flex justify-between items-center">
         <div className="flex items-center space-x-3">
           <Avatar className="w-8 h-8">
@@ -28,7 +28,7 @@ const ChatHeader = ({ onClose }: ChatHeaderProps) => {
           variant="ghost"
           size="sm"
           onClick={onClose}
-          className="text-white hover:bg-white/10 p-2 h-8 w-8 rounded-full"
+          className="text-white hover:bg-white/20 hover:shadow-md p-2 h-8 w-8 rounded-full transition-all duration-200 hover:scale-110 flex-shrink-0 z-10"
         >
           <X className="h-4 w-4" />
         </Button>
