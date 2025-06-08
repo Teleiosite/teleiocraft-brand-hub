@@ -273,22 +273,23 @@ const Index = () => {
             </p>
           </div>
           
-          <div className="relative max-w-6xl mx-auto">
+          {/* Desktop Carousel */}
+          <div className="relative max-w-6xl mx-auto hidden md:block">
             <div className="overflow-hidden" ref={testimonialsEmblaRef}>
               <div className="flex">
                 {testimonials.map((testimonial, index) => (
                   <div key={index} className="flex-[0_0_33.333%] min-w-0 pl-4">
-                    <Card className="border-0 shadow-md h-full mr-4">
+                    <Card className="border-0 shadow-md h-full mr-4 bg-white/80 backdrop-blur-sm">
                       <CardContent className="p-6 flex flex-col h-full">
                         <div className="flex mb-4">
                           {[...Array(testimonial.rating)].map((_, i) => (
                             <Star key={i} className="h-5 w-5 text-yellow-400 fill-current" />
                           ))}
                         </div>
-                        <p className="text-gray-600 mb-4 italic flex-grow">
+                        <p className="text-gray-600 mb-4 italic flex-grow text-left">
                           "{testimonial.text}"
                         </p>
-                        <div className="mt-auto">
+                        <div className="mt-auto text-left">
                           <p className="font-semibold text-gray-900">{testimonial.name}</p>
                           <p className="text-sm text-gray-500">{testimonial.company}</p>
                         </div>
@@ -298,6 +299,32 @@ const Index = () => {
                 ))}
               </div>
             </div>
+          </div>
+
+          {/* Mobile Vertical Stack */}
+          <div className="md:hidden space-y-4">
+            {testimonials.map((testimonial, index) => (
+              <Card 
+                key={index} 
+                className="border-0 shadow-md bg-white/90 backdrop-blur-sm animate-fade-in"
+                style={{ animationDelay: `${index * 100}ms` }}
+              >
+                <CardContent className="p-6">
+                  <div className="flex mb-4">
+                    {[...Array(testimonial.rating)].map((_, i) => (
+                      <Star key={i} className="h-5 w-5 text-yellow-400 fill-current" />
+                    ))}
+                  </div>
+                  <p className="text-gray-600 mb-4 italic text-left leading-relaxed">
+                    "{testimonial.text}"
+                  </p>
+                  <div className="text-left">
+                    <p className="font-semibold text-gray-900">{testimonial.name}</p>
+                    <p className="text-sm text-gray-500">{testimonial.company}</p>
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
           </div>
         </div>
       </section>
