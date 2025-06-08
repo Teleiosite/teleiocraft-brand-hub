@@ -1,11 +1,13 @@
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
+import { useToast } from "@/hooks/use-toast";
 import { Mail, Phone, Clock, MapPin, Send, CheckCircle } from "lucide-react";
+import ReCAPTCHA from "react-google-recaptcha";
 
 const Contact = () => {
   const [formData, setFormData] = useState({
@@ -17,6 +19,10 @@ const Contact = () => {
   });
   
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [captchaValue, setCaptchaValue] = useState<string | null>(null);
+  const recaptchaRef = useRef<ReCAPTCHA>(null);
+  const { toast } = useToast();
 
   // Scroll to top when component mounts
   useEffect(() => {
@@ -31,13 +37,66 @@ const Contact = () => {
     }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleCaptchaChange = (value: string | null) => {
+    setCaptchaValue(value);
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("Form submitted:", formData);
-    // Handle form submission here
-    alert("Thank you for your message! We'll get back to you soon.");
-    setFormData({ name: "", email: "", phone: "", service: "", message: "" });
-    setIsSubmitted(true);
+    
+    if (!captchaValue) {
+      toast({
+        title: "Captcha Required",
+        description: "Please complete the captcha verification.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    setIsSubmitting(true);
+
+    try {
+      // Create mailto link with form data
+      const subject = `New Contact Form Submission - ${formData.service}`;
+      const body = `
+Name: ${formData.name}
+Email: ${formData.email}
+Phone: ${formData.phone}
+Service: ${formData.service}
+
+Message:
+${formData.message}
+
+---
+This message was sent from the Teleiocraft Solutions contact form.
+      `;
+
+      const mailtoLink = `mailto:TeleiocraftSolutions@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+      
+      // Open default email client
+      window.location.href = mailtoLink;
+
+      // Show success message
+      toast({
+        title: "Email Client Opened",
+        description: "Your default email client has been opened with the message pre-filled. Please send the email to complete your inquiry.",
+      });
+
+      // Reset form
+      setFormData({ name: "", email: "", phone: "", service: "", message: "" });
+      setIsSubmitted(true);
+      setCaptchaValue(null);
+      recaptchaRef.current?.reset();
+
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "There was an error processing your request. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -130,10 +189,27 @@ const Contact = () => {
                       placeholder="Tell us about your project..."
                     />
                   </div>
+
+                  <div className="flex justify-center">
+                    <ReCAPTCHA
+                      ref={recaptchaRef}
+                      sitekey="6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI" // Test site key - replace with your actual site key
+                      onChange={handleCaptchaChange}
+                    />
+                  </div>
                   
-                  <Button type="submit" className="w-full bg-[#004282] hover:bg-[#003366] text-white">
-                    Send Message
+                  <Button 
+                    type="submit" 
+                    className="w-full bg-[#004282] hover:bg-[#003366] text-white"
+                    disabled={isSubmitting || !captchaValue}
+                  >
+                    {isSubmitting ? "Processing..." : "Send Message"}
                   </Button>
+
+                  <div className="text-sm text-gray-600 text-center">
+                    <p>Note: This will open your default email client with the message pre-filled.</p>
+                    <p>You can also email us directly at: <a href="mailto:TeleiocraftSolutions@gmail.com" className="text-[#004282] hover:underline">TeleiocraftSolutions@gmail.com</a></p>
+                  </div>
                 </form>
               </CardContent>
             </Card>
