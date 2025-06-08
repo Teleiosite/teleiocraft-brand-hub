@@ -21,14 +21,14 @@ const Navbar = () => {
   return (
     <nav className="bg-white shadow-md sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center h-16">
+        <div className="flex justify-between items-center h-14 sm:h-16">
           <Link to="/" className="flex items-center">
-            <span className="text-2xl font-bold text-[#004282]">Teleiocraft</span>
-            <span className="text-lg text-gray-600 ml-2">Solutions</span>
+            <span className="text-xl sm:text-2xl font-bold text-[#004282]">Teleiocraft</span>
+            <span className="text-sm sm:text-lg text-gray-600 ml-1 sm:ml-2">Solutions</span>
           </Link>
 
           {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center space-x-8">
+          <div className="hidden md:flex items-center space-x-6 lg:space-x-8">
             {navigation.map((item) => (
               <Link
                 key={item.name}
@@ -42,7 +42,7 @@ const Navbar = () => {
                 {item.name}
               </Link>
             ))}
-            <Button asChild className="bg-[#004282] hover:bg-[#003366] text-white">
+            <Button asChild className="bg-[#004282] hover:bg-[#003366] text-white text-sm px-4 py-2">
               <Link to="/contact">Free Consultation</Link>
             </Button>
           </div>
@@ -53,9 +53,9 @@ const Navbar = () => {
               variant="ghost"
               size="icon"
               onClick={() => setIsOpen(!isOpen)}
-              className="text-gray-700"
+              className="text-gray-700 h-10 w-10"
             >
-              {isOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+              {isOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
             </Button>
           </div>
         </div>
@@ -68,7 +68,7 @@ const Navbar = () => {
                 <Link
                   key={item.name}
                   to={item.href}
-                  className={`block px-3 py-2 rounded-md text-base font-medium transition-colors ${
+                  className={`block px-3 py-3 rounded-md text-base font-medium transition-colors ${
                     isActive(item.href)
                       ? "text-[#004282] bg-[#f2f8ff]"
                       : "text-gray-700 hover:text-[#004282] hover:bg-[#f2f8ff]"
@@ -78,9 +78,11 @@ const Navbar = () => {
                   {item.name}
                 </Link>
               ))}
-              <Button asChild className="w-full mt-2 bg-[#004282] hover:bg-[#003366] text-white">
-                <Link to="/contact" onClick={() => setIsOpen(false)}>Free Consultation</Link>
-              </Button>
+              <div className="px-3 pt-2">
+                <Button asChild className="w-full bg-[#004282] hover:bg-[#003366] text-white">
+                  <Link to="/contact" onClick={() => setIsOpen(false)}>Free Consultation</Link>
+                </Button>
+              </div>
             </div>
           </div>
         )}

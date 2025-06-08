@@ -1,3 +1,4 @@
+
 import React, { useState, useRef, useEffect } from 'react';
 import { Card, CardContent } from "@/components/ui/card";
 import ChatButton from './chatbot/ChatButton';
@@ -185,12 +186,12 @@ const Chatbot = () => {
 
       {/* Chat Window */}
       {isOpen && (
-        <Card className="fixed bottom-6 right-6 z-50 w-80 sm:w-96 h-[500px] shadow-2xl border-0 rounded-2xl overflow-hidden animate-scale-in">
+        <Card className="fixed bottom-2 sm:bottom-6 right-2 sm:right-6 left-2 sm:left-auto z-50 w-auto sm:w-80 md:w-96 h-[calc(100vh-2rem)] sm:h-[500px] max-h-[calc(100vh-2rem)] shadow-2xl border-0 rounded-xl sm:rounded-2xl overflow-hidden animate-scale-in">
           <ChatHeader onClose={() => setIsOpen(false)} />
           
           <CardContent className="flex flex-col h-full p-0">
             {/* Messages Area */}
-            <div className="flex-1 overflow-y-auto p-4 space-y-3 bg-gray-50">
+            <div className="flex-1 overflow-y-auto p-3 sm:p-4 space-y-3 bg-gray-50">
               {messages.map((message) => (
                 <ChatMessage key={message.id} message={message} />
               ))}
