@@ -1,4 +1,3 @@
-
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Carousel, CarouselContent, CarouselItem } from "@/components/ui/carousel";
@@ -148,6 +147,11 @@ const Index = () => {
   const [testimonialsEmblaRef] = useEmblaCarousel(
     { loop: true, align: "start" },
     [Autoplay({ delay: 4000 })]
+  );
+
+  const [mobileTestimonialsEmblaRef] = useEmblaCarousel(
+    { loop: true, align: "center" },
+    [Autoplay({ delay: 3000 })]
   );
 
   return (
@@ -301,30 +305,42 @@ const Index = () => {
             </div>
           </div>
 
-          {/* Mobile Vertical Stack */}
-          <div className="md:hidden space-y-4">
-            {testimonials.map((testimonial, index) => (
-              <Card 
-                key={index} 
-                className="border-0 shadow-md bg-white/90 backdrop-blur-sm animate-fade-in"
-                style={{ animationDelay: `${index * 100}ms` }}
-              >
-                <CardContent className="p-6">
-                  <div className="flex mb-4">
-                    {[...Array(testimonial.rating)].map((_, i) => (
-                      <Star key={i} className="h-5 w-5 text-yellow-400 fill-current" />
-                    ))}
+          {/* Mobile Carousel */}
+          <div className="md:hidden">
+            <div className="overflow-hidden" ref={mobileTestimonialsEmblaRef}>
+              <div className="flex">
+                {testimonials.map((testimonial, index) => (
+                  <div key={index} className="flex-[0_0_85%] min-w-0 pl-4">
+                    <Card className="border-0 shadow-md mr-4 bg-white/90 backdrop-blur-sm animate-fade-in">
+                      <CardContent className="p-6">
+                        <div className="flex mb-4 justify-center">
+                          {[...Array(testimonial.rating)].map((_, i) => (
+                            <Star key={i} className="h-5 w-5 text-yellow-400 fill-current" />
+                          ))}
+                        </div>
+                        <p className="text-gray-600 mb-6 italic text-center leading-relaxed text-sm">
+                          "{testimonial.text}"
+                        </p>
+                        <div className="text-center">
+                          <p className="font-semibold text-gray-900">{testimonial.name}</p>
+                          <p className="text-sm text-gray-500">{testimonial.company}</p>
+                        </div>
+                      </CardContent>
+                    </Card>
                   </div>
-                  <p className="text-gray-600 mb-4 italic text-left leading-relaxed">
-                    "{testimonial.text}"
-                  </p>
-                  <div className="text-left">
-                    <p className="font-semibold text-gray-900">{testimonial.name}</p>
-                    <p className="text-sm text-gray-500">{testimonial.company}</p>
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
+                ))}
+              </div>
+            </div>
+            
+            {/* Mobile carousel indicators */}
+            <div className="flex justify-center mt-6 space-x-2">
+              {testimonials.map((_, index) => (
+                <div
+                  key={index}
+                  className="w-2 h-2 rounded-full bg-gray-300 transition-colors duration-300"
+                />
+              ))}
+            </div>
           </div>
         </div>
       </section>

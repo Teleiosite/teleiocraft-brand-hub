@@ -174,29 +174,29 @@ const Services = () => {
             {services.map((service, index) => (
               <Card key={index} className={`border-0 shadow-lg hover:shadow-xl transition-all duration-300 relative overflow-hidden bg-white rounded-xl ${service.popular ? 'ring-2 ring-[#004282]' : ''} flex flex-col h-full`}>
                 {service.popular && (
-                  <div className="absolute -top-2 left-1/2 transform -translate-x-1/2 z-10 px-6 py-2">
-                    <span className="bg-[#004282] text-white px-6 py-3 rounded-full text-sm font-semibold shadow-lg">
+                  <div className="absolute top-4 left-1/2 transform -translate-x-1/2 z-10">
+                    <span className="bg-[#004282] text-white px-4 py-2 rounded-full text-xs md:text-sm font-semibold shadow-lg whitespace-nowrap">
                       Most Popular
                     </span>
                   </div>
                 )}
-                <CardHeader className="text-center pb-4 pt-16">
-                  <div className="text-5xl mb-4">{service.icon}</div>
-                  <CardTitle className="text-xl text-gray-900 mb-6 min-h-[3.5rem] flex items-center justify-center">
+                <CardHeader className={`text-center pb-4 ${service.popular ? 'pt-20' : 'pt-8'}`}>
+                  <div className="text-4xl md:text-5xl mb-4">{service.icon}</div>
+                  <CardTitle className="text-lg md:text-xl text-gray-900 mb-6 min-h-[3.5rem] flex items-center justify-center px-2">
                     {service.title}
                   </CardTitle>
                 </CardHeader>
-                <CardContent className="flex flex-col flex-grow pt-0 px-6 pb-6">
-                  <p className="text-gray-600 mb-6 text-center leading-relaxed min-h-[4.5rem] flex items-center">
+                <CardContent className="flex flex-col flex-grow pt-0 px-4 md:px-6 pb-6">
+                  <p className="text-gray-600 mb-6 text-center leading-relaxed min-h-[4.5rem] flex items-center text-sm md:text-base px-2">
                     {service.description}
                   </p>
                   
                   <div className="mb-6 flex-grow">
-                    <h4 className="font-semibold text-gray-900 mb-4 text-center">What's Included:</h4>
+                    <h4 className="font-semibold text-gray-900 mb-4 text-center text-sm md:text-base">What's Included:</h4>
                     <ul className="space-y-3">
                       {service.features.map((feature, featureIndex) => (
-                        <li key={featureIndex} className="flex items-start text-sm text-gray-600">
-                          <CheckCircle className="h-4 w-4 text-green-500 mr-3 flex-shrink-0 mt-0.5" />
+                        <li key={featureIndex} className="flex items-start text-xs md:text-sm text-gray-600">
+                          <CheckCircle className="h-3 w-3 md:h-4 md:w-4 text-green-500 mr-2 md:mr-3 flex-shrink-0 mt-0.5" />
                           <span className="flex-1">{feature}</span>
                         </li>
                       ))}
@@ -204,9 +204,9 @@ const Services = () => {
                   </div>
                   
                   <div className="mt-auto">
-                    <Button asChild className={`w-full ${service.popular ? 'bg-[#004282] hover:bg-[#003366]' : 'bg-gray-800 hover:bg-gray-900'} text-white rounded-lg py-3 font-medium`}>
+                    <Button asChild className={`w-full ${service.popular ? 'bg-[#004282] hover:bg-[#003366]' : 'bg-gray-800 hover:bg-gray-900'} text-white rounded-lg py-2 md:py-3 font-medium text-sm md:text-base`}>
                       <Link to="/contact">
-                        Get Started <ArrowRight className="ml-2 h-4 w-4" />
+                        Get Started <ArrowRight className="ml-2 h-3 w-3 md:h-4 md:w-4" />
                       </Link>
                     </Button>
                   </div>

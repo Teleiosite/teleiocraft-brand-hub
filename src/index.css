@@ -101,6 +101,11 @@
     .overflow-y-auto {
       -webkit-overflow-scrolling: touch;
     }
+    
+    /* Smooth carousel scrolling on mobile */
+    .embla__container {
+      -webkit-overflow-scrolling: touch;
+    }
   }
 }
 
