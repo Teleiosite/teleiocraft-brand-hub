@@ -11,7 +11,7 @@ const Footer = () => {
           <div className="col-span-1 md:col-span-2">
             <Link to="/" className="flex items-center mb-4">
               <img 
-                src="/lovable-uploads/de1ca24c-8009-49a5-a791-06e560074e9d.png" 
+                src="/lovable-uploads/f5a401f3-4301-4cd8-91d3-ea2decc48f31.png" 
                 alt="Teleiocraft Solutions" 
                 className="h-12 w-auto filter brightness-0 invert"
               />
