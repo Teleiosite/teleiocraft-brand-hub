@@ -11,7 +11,7 @@ const Footer = () => {
           <div className="col-span-1 md:col-span-2">
             <Link to="/" className="flex items-center mb-4">
               <img 
-                src="/lovable-uploads/f5a401f3-4301-4cd8-91d3-ea2decc48f31.png" 
+                src="/lovable-uploads/2cebe1c3-0f90-4ff4-8da0-7067c4a39fdb.png" 
                 alt="Teleiocraft Solutions" 
                 className="h-12 w-auto filter brightness-0 invert"
               />
@@ -51,7 +51,7 @@ const Footer = () => {
           <div>
             <h3 className="text-lg font-semibold mb-4">Contact</h3>
             <div className="space-y-2 text-gray-300">
-              <p>info@teleiocraft.com</p>
+              <p>TeleiocraftSolutions@gmail.com</p>
               <p>+1 (555) 123-4567</p>
               <p>Mon - Fri: 9:00 AM - 6:00 PM</p>
             </div>

@@ -13,11 +13,11 @@ const Contact = () => {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
-    phone: '',
-    service: '',
+    subject: '',
     message: ''
   });
   
+  const [formErrors, setFormErrors] = useState<{[key: string]: string}>({});
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [captchaValue, setCaptchaValue] = useState<string | null>(null);
@@ -29,20 +29,68 @@ const Contact = () => {
     window.scrollTo(0, 0);
   }, []);
 
+  const validateForm = () => {
+    const errors: {[key: string]: string} = {};
+    
+    if (!formData.name.trim()) {
+      errors.name = 'Name is required';
+    }
+    
+    if (!formData.email.trim()) {
+      errors.email = 'Email is required';
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
+      errors.email = 'Please enter a valid email address';
+    }
+    
+    if (!formData.subject.trim()) {
+      errors.subject = 'Subject is required';
+    }
+    
+    if (!formData.message.trim()) {
+      errors.message = 'Message is required';
+    } else if (formData.message.trim().length < 10) {
+      errors.message = 'Message must be at least 10 characters long';
+    }
+    
+    setFormErrors(errors);
+    return Object.keys(errors).length === 0;
+  };
+
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     setFormData(prev => ({
       ...prev,
       [name]: value
     }));
+    
+    // Clear error when user starts typing
+    if (formErrors[name]) {
+      setFormErrors(prev => ({
+        ...prev,
+        [name]: ''
+      }));
+    }
   };
 
   const handleCaptchaChange = (value: string | null) => {
     setCaptchaValue(value);
   };
 
+  const sanitizeInput = (input: string) => {
+    return input.replace(/[<>]/g, '');
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    if (!validateForm()) {
+      toast({
+        title: "Validation Error",
+        description: "Please fix the errors in the form before submitting.",
+        variant: "destructive",
+      });
+      return;
+    }
     
     if (!captchaValue) {
       toast({
@@ -56,19 +104,27 @@ const Contact = () => {
     setIsSubmitting(true);
 
     try {
+      // Sanitize inputs
+      const sanitizedData = {
+        name: sanitizeInput(formData.name.trim()),
+        email: sanitizeInput(formData.email.trim()),
+        subject: sanitizeInput(formData.subject.trim()),
+        message: sanitizeInput(formData.message.trim())
+      };
+
       // Create mailto link with form data
-      const subject = `New Contact Form Submission - ${formData.service}`;
+      const subject = `${sanitizedData.subject} - From ${sanitizedData.name}`;
       const body = `
-Name: ${formData.name}
-Email: ${formData.email}
-Phone: ${formData.phone}
-Service: ${formData.service}
+Name: ${sanitizedData.name}
+Email: ${sanitizedData.email}
+Subject: ${sanitizedData.subject}
 
 Message:
-${formData.message}
+${sanitizedData.message}
 
 ---
 This message was sent from the Teleiocraft Solutions contact form.
+Timestamp: ${new Date().toISOString()}
       `;
 
       const mailtoLink = `mailto:TeleiocraftSolutions@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
@@ -83,12 +139,14 @@ This message was sent from the Teleiocraft Solutions contact form.
       });
 
       // Reset form
-      setFormData({ name: "", email: "", phone: "", service: "", message: "" });
+      setFormData({ name: "", email: "", subject: "", message: "" });
+      setFormErrors({});
       setIsSubmitted(true);
       setCaptchaValue(null);
       recaptchaRef.current?.reset();
 
     } catch (error) {
+      console.error("Error processing form:", error);
       toast({
         title: "Error",
         description: "There was an error processing your request. Please try again.",
@@ -125,7 +183,7 @@ This message was sent from the Teleiocraft Solutions contact form.
               <CardContent>
                 <form onSubmit={handleSubmit} className="space-y-6">
                   <div>
-                    <Label htmlFor="name">Full Name</Label>
+                    <Label htmlFor="name">Full Name *</Label>
                     <Input
                       id="name"
                       name="name"
@@ -133,12 +191,16 @@ This message was sent from the Teleiocraft Solutions contact form.
                       value={formData.name}
                       onChange={handleInputChange}
                       required
-                      className="mt-1"
+                      className={`mt-1 ${formErrors.name ? 'border-red-500' : ''}`}
+                      aria-describedby={formErrors.name ? 'name-error' : undefined}
                     />
+                    {formErrors.name && (
+                      <p id="name-error" className="text-red-500 text-sm mt-1">{formErrors.name}</p>
+                    )}
                   </div>
                   
                   <div>
-                    <Label htmlFor="email">Email Address</Label>
+                    <Label htmlFor="email">Email Address *</Label>
                     <Input
                       id="email"
                       name="email"
@@ -146,38 +208,34 @@ This message was sent from the Teleiocraft Solutions contact form.
                       value={formData.email}
                       onChange={handleInputChange}
                       required
-                      className="mt-1"
+                      className={`mt-1 ${formErrors.email ? 'border-red-500' : ''}`}
+                      aria-describedby={formErrors.email ? 'email-error' : undefined}
                     />
+                    {formErrors.email && (
+                      <p id="email-error" className="text-red-500 text-sm mt-1">{formErrors.email}</p>
+                    )}
                   </div>
                   
                   <div>
-                    <Label htmlFor="phone">Phone Number</Label>
+                    <Label htmlFor="subject">Subject *</Label>
                     <Input
-                      id="phone"
-                      name="phone"
-                      type="tel"
-                      value={formData.phone}
-                      onChange={handleInputChange}
-                      required
-                      className="mt-1"
-                    />
-                  </div>
-                  
-                  <div>
-                    <Label htmlFor="service">Service</Label>
-                    <Input
-                      id="service"
-                      name="service"
+                      id="subject"
+                      name="subject"
                       type="text"
-                      value={formData.service}
+                      value={formData.subject}
                       onChange={handleInputChange}
                       required
-                      className="mt-1"
+                      className={`mt-1 ${formErrors.subject ? 'border-red-500' : ''}`}
+                      placeholder="What can we help you with?"
+                      aria-describedby={formErrors.subject ? 'subject-error' : undefined}
                     />
+                    {formErrors.subject && (
+                      <p id="subject-error" className="text-red-500 text-sm mt-1">{formErrors.subject}</p>
+                    )}
                   </div>
                   
                   <div>
-                    <Label htmlFor="message">Message</Label>
+                    <Label htmlFor="message">Message *</Label>
                     <Textarea
                       id="message"
                       name="message"
@@ -185,9 +243,13 @@ This message was sent from the Teleiocraft Solutions contact form.
                       value={formData.message}
                       onChange={handleInputChange}
                       required
-                      className="mt-1"
-                      placeholder="Tell us about your project..."
+                      className={`mt-1 ${formErrors.message ? 'border-red-500' : ''}`}
+                      placeholder="Tell us about your project in detail..."
+                      aria-describedby={formErrors.message ? 'message-error' : undefined}
                     />
+                    {formErrors.message && (
+                      <p id="message-error" className="text-red-500 text-sm mt-1">{formErrors.message}</p>
+                    )}
                   </div>
 
                   <div className="flex justify-center">
@@ -203,10 +265,21 @@ This message was sent from the Teleiocraft Solutions contact form.
                     className="w-full bg-[#004282] hover:bg-[#003366] text-white"
                     disabled={isSubmitting || !captchaValue}
                   >
-                    {isSubmitting ? "Processing..." : "Send Message"}
+                    {isSubmitting ? (
+                      <>
+                        <Send className="mr-2 h-4 w-4 animate-spin" />
+                        Processing...
+                      </>
+                    ) : (
+                      <>
+                        <Send className="mr-2 h-4 w-4" />
+                        Send Message
+                      </>
+                    )}
                   </Button>
 
-                  <div className="text-sm text-gray-600 text-center">
+                  <div className="text-sm text-gray-600 text-center space-y-2">
+                    <p>* Required fields</p>
                     <p>Note: This will open your default email client with the message pre-filled.</p>
                     <p>You can also email us directly at: <a href="mailto:TeleiocraftSolutions@gmail.com" className="text-[#004282] hover:underline">TeleiocraftSolutions@gmail.com</a></p>
                   </div>
