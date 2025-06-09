@@ -23,8 +23,11 @@ const Navbar = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-14 sm:h-16">
           <Link to="/" className="flex items-center">
-            <span className="text-xl sm:text-2xl font-bold text-[#004282]">Teleiocraft</span>
-            <span className="text-sm sm:text-lg text-gray-600 ml-1 sm:ml-2">Solutions</span>
+            <img 
+              src="/lovable-uploads/de1ca24c-8009-49a5-a791-06e560074e9d.png" 
+              alt="Teleiocraft Solutions" 
+              className="h-8 sm:h-10 w-auto"
+            />
           </Link>
 
           {/* Desktop Navigation */}

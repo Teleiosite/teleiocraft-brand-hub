@@ -10,8 +10,11 @@ const Footer = () => {
           {/* Brand */}
           <div className="col-span-1 md:col-span-2">
             <Link to="/" className="flex items-center mb-4">
-              <span className="text-2xl font-bold">Teleiocraft</span>
-              <span className="text-lg ml-2 text-gray-300">Solutions</span>
+              <img 
+                src="/lovable-uploads/de1ca24c-8009-49a5-a791-06e560074e9d.png" 
+                alt="Teleiocraft Solutions" 
+                className="h-12 w-auto filter brightness-0 invert"
+              />
             </Link>
             <p className="text-gray-300 mb-4 max-w-md">
               We're your Brand Builders and Growth Partners. Transforming businesses through innovative digital solutions.
