@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import { ExternalLink, ArrowRight, Star, TrendingUp, Users, Award } from "lucide-react";
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
 import Autoplay from "embla-carousel-autoplay";
+import { HoverCard, HoverCardContent, HoverCardTrigger } from "@/components/ui/hover-card";
 
 const Portfolio = () => {
   const [activeFilter, setActiveFilter] = useState("all");
@@ -36,18 +37,18 @@ const Portfolio = () => {
       tags: ["Custom Design", "Responsive", "UX/UI", "Modern"],
       results: "250% increase in user engagement",
       client: "TechStart Inc.",
-      link: "#"
+      link: "/contact"
     },
     {
       id: 2,
       title: "Landing Page Design & Optimization",
       category: "web",
       description: "High-converting landing pages with A/B testing and conversion rate optimization",
-      image: "https://images.unsplash.com/photo-1493397212122-2b85dda8106b?w=600&h=400&fit=crop",
+      image: "https://images.unsplash.com/photo-1551650975-87deedd944c3?w=600&h=400&fit=crop",
       tags: ["Landing Page", "CRO", "A/B Testing", "Optimization"],
       results: "180% conversion rate improvement",
       client: "ConvertPro",
-      link: "#"
+      link: "/contact"
     },
     {
       id: 3,
@@ -58,29 +59,29 @@ const Portfolio = () => {
       tags: ["Responsive", "Mobile-First", "Cross-Platform", "Optimization"],
       results: "40% increase in mobile traffic",
       client: "MobileTech",
-      link: "#"
+      link: "/contact"
     },
     {
       id: 4,
       title: "UI/UX Design",
       category: "web",
       description: "Comprehensive design system with reusable components and style guidelines",
-      image: "https://images.unsplash.com/photo-1605810230434-7631ac76ec81?w=600&h=400&fit=crop",
+      image: "https://images.unsplash.com/photo-1581291518857-4e27b48ff24e?w=600&h=400&fit=crop",
       tags: ["Design System", "UI/UX", "Components", "Guidelines"],
       results: "60% faster development cycles",
       client: "DesignLab",
-      link: "#"
+      link: "/contact"
     },
     {
       id: 5,
       title: "E-commerce Website Design",
       category: "web",
       description: "Full-featured e-commerce website with payment integration and inventory management",
-      image: "https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?w=600&h=400&fit=crop",
+      image: "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=600&h=400&fit=crop",
       tags: ["E-commerce", "Payment Gateway", "Inventory", "Shopping Cart"],
       results: "300% increase in online sales",
       client: "ShopEasy",
-      link: "#"
+      link: "/contact"
     },
     {
       id: 6,
@@ -91,7 +92,7 @@ const Portfolio = () => {
       tags: ["Maintenance", "Support", "Monitoring", "Updates"],
       results: "99.9% uptime achieved",
       client: "ReliableWeb",
-      link: "#"
+      link: "/contact"
     },
     {
       id: 7,
@@ -102,7 +103,7 @@ const Portfolio = () => {
       tags: ["WordPress", "Webflow", "CMS", "Content Management"],
       results: "90% reduction in content update time",
       client: "ContentCorp",
-      link: "#"
+      link: "/contact"
     },
 
     // Digital Marketing Services
@@ -115,7 +116,7 @@ const Portfolio = () => {
       tags: ["Social Media", "Content Creation", "Strategy", "Engagement"],
       results: "400% increase in social engagement",
       client: "SocialBrand",
-      link: "#"
+      link: "/contact"
     },
     {
       id: 9,
@@ -126,40 +127,40 @@ const Portfolio = () => {
       tags: ["SEO", "Keywords", "Rankings", "Organic Traffic"],
       results: "500% increase in organic traffic",
       client: "SearchPro",
-      link: "#"
+      link: "/contact"
     },
     {
       id: 10,
       title: "Pay-Per-Click Advertising (PPC)",
       category: "digital-marketing",
       description: "Pay-per-click advertising campaigns with optimized targeting and budget management",
-      image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=600&h=400&fit=crop",
+      image: "https://images.unsplash.com/photo-1579952363873-27d3bfad9c0d?w=600&h=400&fit=crop",
       tags: ["PPC", "Google Ads", "Targeting", "ROI"],
       results: "250% ROI on ad spend",
       client: "AdMax",
-      link: "#"
+      link: "/contact"
     },
     {
       id: 11,
       title: "Email Marketing",
       category: "digital-marketing",
       description: "Automated email marketing campaigns with personalization and segmentation",
-      image: "https://images.unsplash.com/photo-1500673922987-e212871fec22?w=600&h=400&fit=crop",
+      image: "https://images.unsplash.com/photo-1596526131083-e8c633c948d2?w=600&h=400&fit=crop",
       tags: ["Email Marketing", "Automation", "Personalization", "Segmentation"],
       results: "65% open rate, 18% CTR",
       client: "EmailPro",
-      link: "#"
+      link: "/contact"
     },
     {
       id: 12,
       title: "Conversion Rate Optimization (CRO)",
       category: "digital-marketing",
       description: "CRO strategy implementation with testing and optimization for maximum conversions",
-      image: "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=600&h=400&fit=crop",
+      image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=600&h=400&fit=crop",
       tags: ["CRO", "Testing", "Optimization", "Conversions"],
       results: "180% conversion rate improvement",
       client: "ConvertMax",
-      link: "#"
+      link: "/contact"
     },
     {
       id: 13,
@@ -170,7 +171,7 @@ const Portfolio = () => {
       tags: ["Influencer", "Partnerships", "Brand Awareness", "Campaigns"],
       results: "300% increase in brand mentions",
       client: "InfluenceBrand",
-      link: "#"
+      link: "/contact"
     },
     {
       id: 14,
@@ -181,7 +182,7 @@ const Portfolio = () => {
       tags: ["Content Marketing", "Blog", "Video", "Copywriting"],
       results: "450% increase in content engagement",
       client: "ContentKing",
-      link: "#"
+      link: "/contact"
     },
 
     // AI Agent Services
@@ -194,7 +195,7 @@ const Portfolio = () => {
       tags: ["AI Chatbot", "NLP", "Customer Support", "Automation"],
       results: "70% reduction in support tickets",
       client: "ChatBot Inc.",
-      link: "#"
+      link: "/contact"
     },
     {
       id: 16,
@@ -205,7 +206,7 @@ const Portfolio = () => {
       tags: ["Virtual Support", "24/7", "AI Responses", "Customer Service"],
       results: "90% customer satisfaction rate",
       client: "SupportAI",
-      link: "#"
+      link: "/contact"
     },
     {
       id: 17,
@@ -216,7 +217,7 @@ const Portfolio = () => {
       tags: ["Sales AI", "Lead Qualification", "Follow-ups", "CRM Integration"],
       results: "300% increase in qualified leads",
       client: "SalesForce Pro",
-      link: "#"
+      link: "/contact"
     },
     {
       id: 18,
@@ -227,7 +228,7 @@ const Portfolio = () => {
       tags: ["Voice Assistant", "Alexa", "Google", "Voice Commands"],
       results: "250% increase in user interactions",
       client: "VoiceTech",
-      link: "#"
+      link: "/contact"
     },
     {
       id: 19,
@@ -238,7 +239,7 @@ const Portfolio = () => {
       tags: ["Lead Scoring", "Machine Learning", "Qualification", "Automation"],
       results: "85% accuracy in lead scoring",
       client: "LeadGen AI",
-      link: "#"
+      link: "/contact"
     },
     {
       id: 20,
@@ -249,7 +250,7 @@ const Portfolio = () => {
       tags: ["Sentiment Analysis", "Social Monitoring", "Brand Reputation", "Real-time"],
       results: "95% accuracy in sentiment detection",
       client: "BrandWatch",
-      link: "#"
+      link: "/contact"
     },
     {
       id: 21,
@@ -260,7 +261,7 @@ const Portfolio = () => {
       tags: ["FAQ System", "Dynamic Content", "Smart Search", "AI Powered"],
       results: "60% reduction in support queries",
       client: "HelpDesk Pro",
-      link: "#"
+      link: "/contact"
     },
 
     // Mobile App Development
@@ -273,7 +274,7 @@ const Portfolio = () => {
       tags: ["iOS", "Android", "Native Development", "Performance"],
       results: "4.8 star rating on app stores",
       client: "MobileFirst Co.",
-      link: "#"
+      link: "/contact"
     },
     {
       id: 23,
@@ -284,18 +285,18 @@ const Portfolio = () => {
       tags: ["Flutter", "React Native", "Cross-Platform", "Deployment"],
       results: "50% faster time to market",
       client: "CrossApp Solutions",
-      link: "#"
+      link: "/contact"
     },
     {
       id: 24,
       title: "UI/UX for Mobile Apps",
       category: "mobile",
       description: "Mobile-optimized user interface and experience design for enhanced user engagement",
-      image: "https://images.unsplash.com/photo-1605810230434-7631ac76ec81?w=600&h=400&fit=crop",
+      image: "https://images.unsplash.com/photo-1581291518857-4e27b48ff24e?w=600&h=400&fit=crop",
       tags: ["Mobile UI", "UX Design", "User Engagement", "Optimization"],
       results: "85% user retention rate",
       client: "AppDesign Studio",
-      link: "#"
+      link: "/contact"
     },
     {
       id: 25,
@@ -306,7 +307,7 @@ const Portfolio = () => {
       tags: ["Testing", "QA", "Device Compatibility", "Quality"],
       results: "99% bug-free deployment",
       client: "QualityApps Inc.",
-      link: "#"
+      link: "/contact"
     },
     {
       id: 26,
@@ -317,7 +318,7 @@ const Portfolio = () => {
       tags: ["ASO", "App Store", "Visibility", "Downloads"],
       results: "300% increase in app downloads",
       client: "AppBoost Agency",
-      link: "#"
+      link: "/contact"
     },
     {
       id: 27,
@@ -328,7 +329,7 @@ const Portfolio = () => {
       tags: ["Backend", "API Integration", "Database", "Cloud Services"],
       results: "99.9% uptime and reliability",
       client: "BackendPro",
-      link: "#"
+      link: "/contact"
     },
     {
       id: 28,
@@ -339,7 +340,7 @@ const Portfolio = () => {
       tags: ["Push Notifications", "Personalization", "Automation", "Engagement"],
       results: "45% increase in user engagement",
       client: "NotifyApp",
-      link: "#"
+      link: "/contact"
     },
 
     // Branding Services
@@ -352,7 +353,7 @@ const Portfolio = () => {
       tags: ["Brand Identity", "Visual Design", "Positioning", "Strategy"],
       results: "200% brand recognition increase",
       client: "IdentityBrand Co.",
-      link: "#"
+      link: "/contact"
     },
     {
       id: 30,
@@ -363,7 +364,7 @@ const Portfolio = () => {
       tags: ["Logo Design", "Brand Essence", "Visual Identity", "Professional"],
       results: "150% brand recall improvement",
       client: "LogoCraft Studio",
-      link: "#"
+      link: "/contact"
     },
     {
       id: 31,
@@ -374,18 +375,18 @@ const Portfolio = () => {
       tags: ["Brand Strategy", "Naming", "Positioning", "Differentiation"],
       results: "80% market penetration increase",
       client: "StrategyBrand",
-      link: "#"
+      link: "/contact"
     },
     {
       id: 32,
       title: "Brand Guidelines Creation",
       category: "branding",
       description: "Comprehensive brand guidelines ensuring consistent brand application across all channels",
-      image: "https://images.unsplash.com/photo-1605810230434-7631ac76ec81?w=600&h=400&fit=crop",
+      image: "https://images.unsplash.com/photo-1581291518857-4e27b48ff24e?w=600&h=400&fit=crop",
       tags: ["Brand Guidelines", "Consistency", "Application", "Standards"],
       results: "95% brand consistency achieved",
       client: "GuidelinesPro",
-      link: "#"
+      link: "/contact"
     },
     {
       id: 33,
@@ -396,7 +397,7 @@ const Portfolio = () => {
       tags: ["Brand Voice", "Messaging", "Communication", "Strategy"],
       results: "70% message clarity improvement",
       client: "VoiceBrand Agency",
-      link: "#"
+      link: "/contact"
     },
     {
       id: 34,
@@ -407,7 +408,7 @@ const Portfolio = () => {
       tags: ["Rebranding", "Refresh", "Modernization", "Market Trends"],
       results: "180% brand perception improvement",
       client: "RefreshBrand Co.",
-      link: "#"
+      link: "/contact"
     },
     {
       id: 35,
@@ -418,7 +419,7 @@ const Portfolio = () => {
       tags: ["Stationery", "Business Cards", "Letterheads", "Corporate"],
       results: "Professional brand presence",
       client: "PrintBrand Studio",
-      link: "#"
+      link: "/contact"
     },
 
     // Graphic Design Services
@@ -431,7 +432,7 @@ const Portfolio = () => {
       tags: ["Social Media", "Graphics", "Engagement", "Platforms"],
       results: "300% social engagement increase",
       client: "SocialGraphics Pro",
-      link: "#"
+      link: "/contact"
     },
     {
       id: 37,
@@ -442,7 +443,7 @@ const Portfolio = () => {
       tags: ["Banners", "Posters", "Events", "Marketing"],
       results: "250% event attendance increase",
       client: "EventDesign Studio",
-      link: "#"
+      link: "/contact"
     },
     {
       id: 38,
@@ -453,7 +454,7 @@ const Portfolio = () => {
       tags: ["Infographics", "Data Visualization", "Information", "Design"],
       results: "400% information retention",
       client: "DataViz Agency",
-      link: "#"
+      link: "/contact"
     },
     {
       id: 39,
@@ -464,18 +465,18 @@ const Portfolio = () => {
       tags: ["Brochures", "Flyers", "Communication", "Marketing"],
       results: "180% response rate increase",
       client: "PrintDesign Co.",
-      link: "#"
+      link: "/contact"
     },
     {
       id: 40,
       title: "Presentation Design",
       category: "graphic",
       description: "Compelling presentation designs that captivate audiences and deliver messages effectively",
-      image: "https://images.unsplash.com/photo-1605810230434-7631ac76ec81?w=600&h=400&fit=crop",
+      image: "https://images.unsplash.com/photo-1581291518857-4e27b48ff24e?w=600&h=400&fit=crop",
       tags: ["Presentations", "Design", "Audience", "Communication"],
       results: "90% presentation approval rate",
       client: "PresentationPro",
-      link: "#"
+      link: "/contact"
     },
     {
       id: 41,
@@ -486,7 +487,7 @@ const Portfolio = () => {
       tags: ["Packaging", "Product Design", "Brand Appeal", "Innovation"],
       results: "200% shelf appeal increase",
       client: "PackageDesign Studio",
-      link: "#"
+      link: "/contact"
     },
     {
       id: 42,
@@ -497,7 +498,7 @@ const Portfolio = () => {
       tags: ["Business Cards", "Professional", "First Impressions", "Networking"],
       results: "Enhanced professional image",
       client: "CardCraft Design",
-      link: "#"
+      link: "/contact"
     },
 
     // Cloud Computing Services
@@ -510,7 +511,7 @@ const Portfolio = () => {
       tags: ["AWS", "Azure", "GCP", "Infrastructure"],
       results: "70% cost reduction achieved",
       client: "CloudTech Solutions",
-      link: "#"
+      link: "/contact"
     },
     {
       id: 44,
@@ -521,7 +522,7 @@ const Portfolio = () => {
       tags: ["Migration", "Cloud Platforms", "Minimal Downtime", "Seamless"],
       results: "99.9% migration success rate",
       client: "MigrationPro",
-      link: "#"
+      link: "/contact"
     },
     {
       id: 45,
@@ -532,7 +533,7 @@ const Portfolio = () => {
       tags: ["Security", "Encryption", "Access Control", "Monitoring"],
       results: "Zero security breaches",
       client: "SecureCloud Inc.",
-      link: "#"
+      link: "/contact"
     },
     {
       id: 46,
@@ -543,7 +544,7 @@ const Portfolio = () => {
       tags: ["DevOps", "CI/CD", "Automation", "Deployment"],
       results: "80% faster deployment cycles",
       client: "DevOps Solutions",
-      link: "#"
+      link: "/contact"
     },
     {
       id: 47,
@@ -554,7 +555,7 @@ const Portfolio = () => {
       tags: ["Storage", "Backup", "Recovery", "Data Management"],
       results: "Unlimited scalability achieved",
       client: "StorageCloud Pro",
-      link: "#"
+      link: "/contact"
     },
     {
       id: 48,
@@ -565,7 +566,7 @@ const Portfolio = () => {
       tags: ["Monitoring", "Maintenance", "Performance", "Uptime"],
       results: "99.99% uptime guaranteed",
       client: "MonitorCloud",
-      link: "#"
+      link: "/contact"
     },
     {
       id: 49,
@@ -576,7 +577,7 @@ const Portfolio = () => {
       tags: ["Disaster Recovery", "Backup", "Failover", "Planning"],
       results: "100% data recovery success",
       client: "RecoveryPlan Co.",
-      link: "#"
+      link: "/contact"
     }
   ];
 
@@ -693,13 +694,36 @@ const Portfolio = () => {
                     className="w-full h-56 object-cover group-hover:scale-105 transition-transform duration-300"
                   />
                   <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-40 transition-all duration-300 flex items-center justify-center">
-                    <Button
-                      size="sm"
-                      className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-white text-[#004282] hover:bg-gray-100"
-                    >
-                      <ExternalLink className="h-4 w-4 mr-2" />
-                      View Project
-                    </Button>
+                    <HoverCard>
+                      <HoverCardTrigger asChild>
+                        <Button
+                          asChild
+                          size="sm"
+                          className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-white text-[#004282] hover:bg-gray-100"
+                        >
+                          <Link to={project.link}>
+                            <ExternalLink className="h-4 w-4 mr-2" />
+                            View Project
+                          </Link>
+                        </Button>
+                      </HoverCardTrigger>
+                      <HoverCardContent className="w-80">
+                        <div className="flex justify-between space-x-4">
+                          <div className="space-y-1">
+                            <h4 className="text-sm font-semibold">{project.title}</h4>
+                            <p className="text-sm text-gray-600">
+                              {project.description}
+                            </p>
+                            <div className="flex items-center pt-2">
+                              <TrendingUp className="h-4 w-4 mr-2 text-green-600" />
+                              <span className="text-xs text-green-600 font-medium">
+                                {project.results}
+                              </span>
+                            </div>
+                          </div>
+                        </div>
+                      </HoverCardContent>
+                    </HoverCard>
                   </div>
                   <div className="absolute top-4 right-4">
                     <span className="bg-[#004282] text-white px-3 py-1 rounded-full text-xs font-semibold">
