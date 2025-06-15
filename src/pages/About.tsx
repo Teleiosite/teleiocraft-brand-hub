@@ -144,7 +144,7 @@ const About = () => {
             <Card className="border-0 shadow-lg">
               <CardContent className="p-8">
                 <p className="text-lg text-gray-600 mb-6 leading-relaxed">
-                  Founded in 2019 by a team of passionate digital experts, Teleiocraft Solutions began with a simple yet powerful vision: to help businesses thrive in the digital age. What started as a small web design agency has evolved into a comprehensive digital solutions provider.
+                  Founded in 2025 by a team of passionate digital experts, Teleiocraft Solutions began with a simple yet powerful vision: to help businesses thrive in the digital age. What started as a small web design agency has evolved into a comprehensive digital solutions provider.
                 </p>
                 <p className="text-lg text-gray-600 mb-6 leading-relaxed">
                   Our journey has been marked by continuous learning, adaptation, and an unwavering commitment to our clients' success. We've witnessed the digital landscape evolve rapidly, and we've made it our mission to stay ahead of the curve, ensuring our clients always have access to the latest and most effective digital strategies.

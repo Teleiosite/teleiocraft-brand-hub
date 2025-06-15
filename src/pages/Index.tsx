@@ -21,7 +21,7 @@ const Index = () => {
       description: "Transform your ideas into powerful digital experiences"
     },
     {
-      image: "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?ixlib=rb-4.0.3&auto=format&fit=crop&w=2426&q=80",
+      image: "/lovable-uploads/Hero-section.jpg",
       title: "Digital Marketing Excellence",
       subtitle: "Data-driven strategies for growth",
       description: "Maximize your online reach and conversions"

@@ -330,7 +330,7 @@ const Contact = () => {
                 <ul className="space-y-2 text-gray-600">
                   <li>• Free consultation to understand your needs</li>
                   <li>• Expert team with years of experience</li>
-                  <li>• Competitive pricing starting at $120</li>
+                  <li>• Competitive pricing starting at your budget</li>
                   <li>• 24/7 support and maintenance</li>
                   <li>• 100% satisfaction guarantee</li>
                 </ul>

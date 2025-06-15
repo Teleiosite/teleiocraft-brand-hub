@@ -24,7 +24,7 @@ const Navbar = () => {
         <div className="flex justify-between items-center h-14 sm:h-16">
           <Link to="/" className="flex items-center">
             <img 
-              src="/lovable-uploads/2cebe1c3-0f90-4ff4-8da0-7067c4a39fdb.png" 
+              src="/lovable-uploads/Teleiocraft_logo.png" 
               alt="Teleiocraft Solutions" 
               className="h-8 sm:h-10 w-auto"
             />
