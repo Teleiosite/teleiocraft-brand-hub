@@ -6,7 +6,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
 import { Mail, Phone, Clock, MapPin, Send, CheckCircle } from "lucide-react";
-// import ReCAPTCHA from "react-google-recaptcha"; // Removing React-Google-Recaptcha to rely on FormSubmit's built-in spam protection
+// Removing React-Google-Recaptcha to rely on FormSubmit's built-in spam protection
 // import { supabase } from "@/integrations/supabase/client"; // Removing Supabase import
 
 const Contact = () => {
@@ -18,10 +18,12 @@ const Contact = () => {
   });
 
   const [formErrors, setFormErrors] = useState<{[key: string]: string}>({});
-  const [isSubmitted, setIsSubmitted] = useState(false);
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  // const [captchaValue, setCaptchaValue] = useState<string | null>(null); // Removing captcha state
-  // const recaptchaRef = useRef<ReCAPTCHA>(null); // Removing recaptcha ref
+  // Removed isSubmitted and isSubmitting state as page will reload
+  // const [isSubmitted, setIsSubmitted] = useState(false);
+  // const [isSubmitting, setIsSubmitting] = useState(false);
+  // Removing captcha state and ref
+  // const [captchaValue, setCaptchaValue] = useState<string | null>(null);
+  // const recaptchaRef = useRef<ReCAPTCHA>(null);
   const { toast } = useToast();
 
   // Scroll to top when component mounts
@@ -76,15 +78,15 @@ const Contact = () => {
     }
   };
 
-  // Removing captcha handler
+  // Removed captcha handler
   // const handleCaptchaChange = (value: string | null) => {
   //   setCaptchaValue(value);
   // };
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-
+  // Simplified handleSubmit for validation only
+  const handleSubmit = (e: React.FormEvent) => {
     if (!validateForm()) {
+      e.preventDefault(); // Prevent form submission if validation fails
       toast({
         title: "Validation Error",
         description: "Please fix the errors in the form before submitting.",
@@ -92,100 +94,8 @@ const Contact = () => {
       });
       return;
     }
-
-    // Removing captcha check
-    // if (!captchaValue) {
-    //   toast({
-    //     title: "Captcha Required",
-    //     description: "Please complete the captcha verification.",
-    //     variant: "destructive",
-    //   });
-    //   return;
-    // }
-
-    setIsSubmitting(true);
-
-    try {
-      // Use the FormSubmit AJAX endpoint with your provided email URL
-      const formSubmitUrl = "https://formsubmit.co/ajax/el/wozade";
-
-      const response = await fetch(formSubmitUrl, {
-        method: "POST",
-        headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json' // Important for AJAX to receive JSON response
-        },
-        body: JSON.stringify({
-          name: formData.name.trim(),
-          email: formData.email.trim(),
-          subject: formData.subject.trim(),
-          message: formData.message.trim(),
-          _subject: `New message from ${formData.name.trim()}`, // Set email subject
-          // _next: "https://yourdomain.co/thank-you", // Optional: URL to redirect after successful submission (even with AJAX)
-          // _captcha: false, // Optional: Disable FormSubmit's reCAPTCHA (not recommended by FormSubmit)
-          _blacklist: "sex, nude, casino, gambling, pharma, supplements, bitcoin, crypto, loan, refinance, debt, credit repair, SEO, marketing, link building, free money, work from home", // Added common spam phrases
-        }),
-      });
-
-      const result = await response.json(); // Parse the JSON response
-
-      if (response.ok) {
-        // FormSubmit AJAX success response often includes a success message
-        toast({
-          title: "Message Sent Successfully!",
-          description: result.message || "Thank you for your message. We'll get back to you soon.",
-        });
-
-        // Reset form
-        setFormData({ name: "", email: "", subject: "", message: "" });
-        setFormErrors({});
-        setIsSubmitted(true);
-        // Removing captcha state and reset
-        // setCaptchaValue(null);
-        // recaptchaRef.current?.reset();
-      } else {
-        // Handle FormSubmit AJAX error response
-        console.error("FormSubmit error:", result);
-        toast({
-          title: "Error Sending Message",
-          description: result.message || "There was an error sending your message. Please try again.",
-          variant: "destructive",
-        });
-      }
-
-    } catch (error: any) {
-      console.error("Error submitting form:", error);
-      toast({
-        title: "Error Sending Message",
-        description: error.message || "There was an error sending your message. Please try again or contact us directly.",
-        variant: "destructive",
-      });
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
-
-  if (isSubmitted) {
-    return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <Card className="max-w-md mx-auto shadow-lg">
-          <CardContent className="text-center p-8">
-            <CheckCircle className="h-16 w-16 text-green-500 mx-auto mb-4" />
-            <h2 className="text-2xl font-bold text-gray-900 mb-2">Message Sent!</h2>
-            <p className="text-gray-600 mb-6">
-              Thank you for contacting us. We've received your message and will get back to you as soon as possible.
-            </p>
-            <Button
-              onClick={() => setIsSubmitted(false)}
-              className="bg-[#004282] hover:bg-[#003366] text-white"
-            >
-              Send Another Message
-            </Button>
-          </CardContent>
-        </Card>
-      </div>
-    );
-  }
+    // If validation passes, allow the default form submission
+ };
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -211,7 +121,12 @@ const Contact = () => {
                 <CardTitle className="text-2xl text-[#004282]">Send us a message</CardTitle>
               </CardHeader>
               <CardContent>
-                <form onSubmit={handleSubmit} className="space-y-6">
+                {/* Modified form tag for standard submission */}
+                <form
+                  onSubmit={handleSubmit} // Still use onSubmit for client-side validation
+                  className="space-y-6"
+                  data-netlify="true" // Added for Netlify Forms
+                >
                   <div>
                     <Label htmlFor="name">Full Name *</Label>
                     <Input
@@ -282,10 +197,10 @@ const Contact = () => {
                     )}
                   </div>
 
+                  {/* FormSubmit handles reCAPTCHA by default in standard forms */}
                   {/* Removing ReCAPTCHA component */}
                   {/* <div className="flex justify-center">
                     <ReCAPTCHA
-                      ref={recaptchaRef}
                       sitekey="6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI" // Test site key - replace with your actual site key
                       onChange={handleCaptchaChange}
                     />
@@ -294,24 +209,18 @@ const Contact = () => {
                   <Button
                     type="submit"
                     className="w-full bg-[#004282] hover:bg-[#003366] text-white"
-                    disabled={isSubmitting} // Disable button only when submitting
+                    // No need to disable while submitting as page reloads
+                    // disabled={isSubmitting}
                   >
-                    {isSubmitting ? (
-                      <>
-                        <Send className="mr-2 h-4 w-4 animate-spin" />
-                        Sending...
-                      </>
-                    ) : (
-                      <>
-                        <Send className="mr-2 h-4 w-4" />
-                        Send Message
-                      </>
-                    )}
+                    <>
+                      <Send className="mr-2 h-4 w-4" />
+                      Send Message
+                    </>
                   </Button>
 
                   <div className="text-sm text-gray-600 text-center space-y-2">
                     <p>* Required fields</p>
-                    <p>You'll receive a confirmation email once your message is sent successfully.</p>
+                    <p>After submitting, your message will be sent and you will see a confirmation.</p>
                     <p>For urgent matters, call us directly at +1 (555) 123-4567</p>
                   </div>
                 </form>
