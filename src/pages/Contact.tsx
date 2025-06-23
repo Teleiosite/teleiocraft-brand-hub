@@ -126,6 +126,7 @@ const Contact = () => {
                   onSubmit={handleSubmit} // Still use onSubmit for client-side validation
                   className="space-y-6"
                   data-netlify="true" // Added for Netlify Forms
+                  name="contact" // Add a name attribute for Netlify Forms identification
                 >
                   <div>
                     <Label htmlFor="name">Full Name *</Label>
@@ -196,6 +197,10 @@ const Contact = () => {
                       <p id="message-error" className="text-red-500 text-sm mt-1">{formErrors.message}</p>
                     )}
                   </div>
+
+                  {/* Add hidden field for Netlify Forms redirection */}
+                  <input type="hidden" name="_redirect" value="/thank-you" />
+
 
                   {/* FormSubmit handles reCAPTCHA by default in standard forms */}
                   {/* Removing ReCAPTCHA component */}
