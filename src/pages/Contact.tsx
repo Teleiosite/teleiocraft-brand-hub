@@ -1,4 +1,3 @@
-
 import { useState, useEffect, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -7,8 +6,8 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
 import { Mail, Phone, Clock, MapPin, Send, CheckCircle } from "lucide-react";
-import ReCAPTCHA from "react-google-recaptcha";
-import { supabase } from "@/integrations/supabase/client";
+// import ReCAPTCHA from "react-google-recaptcha"; // Removing React-Google-Recaptcha to rely on FormSubmit's built-in spam protection
+// import { supabase } from "@/integrations/supabase/client"; // Removing Supabase import
 
 const Contact = () => {
   const [formData, setFormData] = useState({
@@ -17,12 +16,12 @@ const Contact = () => {
     subject: '',
     message: ''
   });
-  
+
   const [formErrors, setFormErrors] = useState<{[key: string]: string}>({});
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [captchaValue, setCaptchaValue] = useState<string | null>(null);
-  const recaptchaRef = useRef<ReCAPTCHA>(null);
+  // const [captchaValue, setCaptchaValue] = useState<string | null>(null); // Removing captcha state
+  // const recaptchaRef = useRef<ReCAPTCHA>(null); // Removing recaptcha ref
   const { toast } = useToast();
 
   // Scroll to top when component mounts
@@ -32,31 +31,31 @@ const Contact = () => {
 
   const validateForm = () => {
     const errors: {[key: string]: string} = {};
-    
+
     if (!formData.name.trim()) {
       errors.name = 'Name is required';
     } else if (formData.name.trim().length < 2) {
       errors.name = 'Name must be at least 2 characters';
     }
-    
+
     if (!formData.email.trim()) {
       errors.email = 'Email is required';
     } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
       errors.email = 'Please enter a valid email address';
     }
-    
+
     if (!formData.subject.trim()) {
       errors.subject = 'Subject is required';
     } else if (formData.subject.trim().length < 5) {
       errors.subject = 'Subject must be at least 5 characters';
     }
-    
+
     if (!formData.message.trim()) {
       errors.message = 'Message is required';
     } else if (formData.message.trim().length < 10) {
       errors.message = 'Message must be at least 10 characters long';
     }
-    
+
     setFormErrors(errors);
     return Object.keys(errors).length === 0;
   };
@@ -67,7 +66,7 @@ const Contact = () => {
       ...prev,
       [name]: value
     }));
-    
+
     // Clear error when user starts typing
     if (formErrors[name]) {
       setFormErrors(prev => ({
@@ -77,13 +76,14 @@ const Contact = () => {
     }
   };
 
-  const handleCaptchaChange = (value: string | null) => {
-    setCaptchaValue(value);
-  };
+  // Removing captcha handler
+  // const handleCaptchaChange = (value: string | null) => {
+  //   setCaptchaValue(value);
+  // };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (!validateForm()) {
       toast({
         title: "Validation Error",
@@ -92,50 +92,66 @@ const Contact = () => {
       });
       return;
     }
-    
-    if (!captchaValue) {
-      toast({
-        title: "Captcha Required",
-        description: "Please complete the captcha verification.",
-        variant: "destructive",
-      });
-      return;
-    }
+
+    // Removing captcha check
+    // if (!captchaValue) {
+    //   toast({
+    //     title: "Captcha Required",
+    //     description: "Please complete the captcha verification.",
+    //     variant: "destructive",
+    //   });
+    //   return;
+    // }
 
     setIsSubmitting(true);
 
     try {
-      // Call the Supabase Edge Function
-      const { data, error } = await supabase.functions.invoke('send-contact-email', {
-        body: {
+      // Use the FormSubmit AJAX endpoint with your provided email URL
+      const formSubmitUrl = "https://formsubmit.co/ajax/el/wozade";
+
+      const response = await fetch(formSubmitUrl, {
+        method: "POST",
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json' // Important for AJAX to receive JSON response
+        },
+        body: JSON.stringify({
           name: formData.name.trim(),
           email: formData.email.trim(),
           subject: formData.subject.trim(),
-          message: formData.message.trim()
-        }
+          message: formData.message.trim(),
+          _subject: `New message from ${formData.name.trim()}`, // Set email subject
+          // _next: "https://yourdomain.co/thank-you", // Optional: URL to redirect after successful submission (even with AJAX)
+          // _captcha: false, // Optional: Disable FormSubmit's reCAPTCHA (not recommended by FormSubmit)
+          _blacklist: "sex, nude, casino, gambling, pharma, supplements, bitcoin, crypto, loan, refinance, debt, credit repair, SEO, marketing, link building, free money, work from home", // Added common spam phrases
+        }),
       });
 
-      if (error) {
-        console.error("Supabase function error:", error);
-        throw new Error(error.message || "Failed to send message");
+      const result = await response.json(); // Parse the JSON response
+
+      if (response.ok) {
+        // FormSubmit AJAX success response often includes a success message
+        toast({
+          title: "Message Sent Successfully!",
+          description: result.message || "Thank you for your message. We'll get back to you soon.",
+        });
+
+        // Reset form
+        setFormData({ name: "", email: "", subject: "", message: "" });
+        setFormErrors({});
+        setIsSubmitted(true);
+        // Removing captcha state and reset
+        // setCaptchaValue(null);
+        // recaptchaRef.current?.reset();
+      } else {
+        // Handle FormSubmit AJAX error response
+        console.error("FormSubmit error:", result);
+        toast({
+          title: "Error Sending Message",
+          description: result.message || "There was an error sending your message. Please try again.",
+          variant: "destructive",
+        });
       }
-
-      if (!data.success) {
-        throw new Error(data.error || "Failed to send message");
-      }
-
-      // Show success message
-      toast({
-        title: "Message Sent Successfully!",
-        description: "Thank you for your message. We'll get back to you soon. Check your email for confirmation.",
-      });
-
-      // Reset form
-      setFormData({ name: "", email: "", subject: "", message: "" });
-      setFormErrors({});
-      setIsSubmitted(true);
-      setCaptchaValue(null);
-      recaptchaRef.current?.reset();
 
     } catch (error: any) {
       console.error("Error submitting form:", error);
@@ -159,7 +175,7 @@ const Contact = () => {
             <p className="text-gray-600 mb-6">
               Thank you for contacting us. We've received your message and will get back to you as soon as possible.
             </p>
-            <Button 
+            <Button
               onClick={() => setIsSubmitted(false)}
               className="bg-[#004282] hover:bg-[#003366] text-white"
             >
@@ -212,7 +228,7 @@ const Contact = () => {
                       <p id="name-error" className="text-red-500 text-sm mt-1">{formErrors.name}</p>
                     )}
                   </div>
-                  
+
                   <div>
                     <Label htmlFor="email">Email Address *</Label>
                     <Input
@@ -229,7 +245,7 @@ const Contact = () => {
                       <p id="email-error" className="text-red-500 text-sm mt-1">{formErrors.email}</p>
                     )}
                   </div>
-                  
+
                   <div>
                     <Label htmlFor="subject">Subject *</Label>
                     <Input
@@ -247,7 +263,7 @@ const Contact = () => {
                       <p id="subject-error" className="text-red-500 text-sm mt-1">{formErrors.subject}</p>
                     )}
                   </div>
-                  
+
                   <div>
                     <Label htmlFor="message">Message *</Label>
                     <Textarea
@@ -266,18 +282,19 @@ const Contact = () => {
                     )}
                   </div>
 
-                  <div className="flex justify-center">
+                  {/* Removing ReCAPTCHA component */}
+                  {/* <div className="flex justify-center">
                     <ReCAPTCHA
                       ref={recaptchaRef}
                       sitekey="6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI" // Test site key - replace with your actual site key
                       onChange={handleCaptchaChange}
                     />
-                  </div>
-                  
-                  <Button 
-                    type="submit" 
+                  </div> */}
+
+                  <Button
+                    type="submit"
                     className="w-full bg-[#004282] hover:bg-[#003366] text-white"
-                    disabled={isSubmitting || !captchaValue}
+                    disabled={isSubmitting} // Disable button only when submitting
                   >
                     {isSubmitting ? (
                       <>
@@ -361,7 +378,7 @@ const Contact = () => {
               We're located in Greater London, United Kingdom
             </p>
           </div>
-          
+
           <div className="rounded-lg overflow-hidden shadow-lg">
             <iframe
               src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d635194.2098742194!2d-0.8406461975097656!3d51.528771840765326!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47d8a00baf21de75%3A0x52963a5addd52a99!2sLondon%2C%20UK!5e0!3m2!1sen!2sus!4v1640000000000!5m2!1sen!2sus"

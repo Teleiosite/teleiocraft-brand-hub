@@ -1,52 +1,6 @@
-# Welcome to your Lovable project
-
-teleiocraft-brand-hub/
-├── .git/
-│ ├── FETCH_HEAD
-│ ├── HEAD
-│ ├── ORIG_HEAD
-│ ├── config
-│ ├── description
-│ ├── hooks/
-│ │ ├── applypatch-msg.sample
-│ │ ├── commit-msg.sample
-│ │ ├── fsmonitor-watchman.sample
-│ │ ├── post-update.sample
-│ │ ├── pre-applypatch.sample
-│ │ ├── pre-commit.sample
-│ │ ├── pre-merge-commit.sample
-│ │ ├── pre-push.sample
-│ │ ├── pre-rebase.sample
-│ │ ├── pre-receive.sample
-│ │ ├── prepare-commit-msg.sample
-│ │ ├── push-to-checkout.sample
-│ │ ├── sendemail-validate.sample
-│ │ └── update.sample
-│ ├── info/
-│ │ └── exclude
-│ ├── logs/
-│ │ ├── HEAD
-│ │ ├── refs/
-│ │ │ ├── heads/
-│ │ │ │ └── main
-│ │ │ └── remotes/
-│ │ │ └── origin/
-│ │ │ ├── HEAD
-│ │ │ └── main
-
 ## Project info
 
-**URL**: https://lovable.dev/projects/4cfe5b59-a878-48db-9fcf-fbb5f0e61e81
-
 ## How can I edit this code?
-
-There are several ways of editing your application.
-
-**Use Lovable**
-
-Simply visit the [Lovable Project](https://lovable.dev/projects/4cfe5b59-a878-48db-9fcf-fbb5f0e61e81) and start prompting.
-
-Changes made via Lovable will be committed automatically to this repo.
 
 **Use your preferred IDE**
 
@@ -94,14 +48,3 @@ This project is built with:
 - shadcn-ui
 - Tailwind CSS
 
-## How can I deploy this project?
-
-Simply open [Lovable](https://lovable.dev/projects/4cfe5b59-a878-48db-9fcf-fbb5f0e61e81) and click on Share -> Publish.
-
-## Can I connect a custom domain to my Lovable project?
-
-Yes, you can!
-
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
-
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/tips-tricks/custom-domain#step-by-step-guide)
