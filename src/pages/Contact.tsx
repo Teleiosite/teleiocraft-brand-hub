@@ -5,24 +5,173 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
-import { Mail, Phone, Clock, MapPin, Send } from "lucide-react";
+import { Mail, Phone, Clock, MapPin, Send, CheckCircle } from "lucide-react";
 import { useForm, ValidationError } from '@formspree/react';
+import ReCAPTCHA from "react-google-recaptcha";
+
+// Define a type for the expected error structure from Formspree
+interface FormspreeError {
+  message?: string; // General error message
+  field?: string;   // Field name for specific errors
+}
 
 const Contact = () => {
-
   // Use Formspree's useForm hook
   const [state, handleSubmit] = useForm("xnnvgyqq");
   const { toast } = useToast();
+
+  // State and ref for reCAPTCHA
+  const [captchaValue, setCaptchaValue] = useState<string | null>(null);
+  const recaptchaRef = useRef<ReCAPTCHA>(null);
+
+  // State for local validation errors
+  const [localErrors, setLocalErrors] = useState<{[key: string]: string}>({});
 
   // Scroll to top when component mounts
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
 
-  if (state.succeeded) {
-    // Redirect to the thank you page
-    window.location.href = '/thank-you'; // Redirect to the thank you page path
+  // Client-side validation function
+  const validateForm = () => {
+    const errors: {[key: string]: string} = {};
+
+    const nameInput = document.getElementById('name') as HTMLInputElement;
+    const emailInput = document.getElementById('email') as HTMLInputElement;
+    const subjectInput = document.getElementById('subject') as HTMLInputElement;
+    const messageInput = document.getElementById('message') as HTMLTextAreaElement;
+
+    if (!nameInput?.value.trim()) {
+      errors.name = 'Name is required';
+    } else if (nameInput.value.trim().length < 2) {
+      errors.name = 'Name must be at least 2 characters';
+    }
+
+    if (!emailInput?.value.trim()) {
+      errors.email = 'Email is required';
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailInput.value.trim())) {
+      errors.email = 'Please enter a valid email address';
+    }
+
+    if (!subjectInput?.value.trim()) {
+      errors.subject = 'Subject is required';
+    } else if (subjectInput.value.trim().length < 5) {
+      errors.subject = 'Subject must be at least 5 characters';
+    }
+
+    if (!messageInput?.value.trim()) {
+      errors.message = 'Message is required';
+    } else if (messageInput.value.trim().length < 10) {
+      errors.message = 'Message must be at least 10 characters long';
+    }
+
+    setLocalErrors(errors); // Update local errors state
+    return Object.keys(errors).length === 0;
+  };
+
+  // Handle input change to trigger validation check for button state
+  const handleInputChange = () => {
+      // This function exists primarily to trigger a re-render
+      // which allows the isFormValid check to update.
+      // We don't need to manage formData state with useForm.
+  };
+
+
+  // Handle CAPTCHA change
+  const handleCaptchaChange = (value: string | null) => {
+    setCaptchaValue(value);
+  };
+
+  // Check if form is valid for button enablement
+  const isFormValid = () => {
+      // We now check local errors AND if required fields have any content AND captcha
+      const nameInput = document.getElementById('name') as HTMLInputElement;
+      const emailInput = document.getElementById('email') as HTMLInputElement;
+      const subjectInput = document.getElementById('subject') as HTMLInputElement;
+      const messageInput = document.getElementById('message') as HTMLTextAreaElement;
+
+      const isFieldsFilled = nameInput?.value.trim() !== '' &&
+                             emailInput?.value.trim() !== '' &&
+                             subjectInput?.value.trim() !== '' &&
+                             messageInput?.value.trim() !== '';
+
+      return isFieldsFilled && Object.keys(localErrors).length === 0 && captchaValue !== null && !state.submitting;
   }
+
+
+  // Handle success state - Formspree's state.succeeded will be true
+  useEffect(() => {
+    if (state.succeeded) {
+      // Show a success toast message
+      toast({
+         title: "Message Sent Successfully!",
+         description: "Thank you for your message. We'll get back to you shortly.",
+      });
+
+      // Reset the form and captcha on success
+      const form = document.getElementById('contact-form-element') as HTMLFormElement;
+      if (form) {
+          form.reset();
+      }
+      setCaptchaValue(null);
+      recaptchaRef.current?.reset();
+
+      // You can still redirect if you prefer, but showing an on-page
+      // success message with the hook is often preferred.
+      // window.location.href = '/thank-you';
+    }
+  }, [state.succeeded, toast]);
+
+
+  // Handle Formspree errors with a toast
+  useEffect(() => {
+      // Cast state.errors to the defined FormspreeError type for better type checking
+      const formspreeErrors = state.errors as unknown as FormspreeError | FormspreeError[];
+
+      if (formspreeErrors && typeof formspreeErrors === 'object') {
+          if (Array.isArray(formspreeErrors) && formspreeErrors.length > 0) {
+              // Handle array of errors (e.g., field errors)
+              // The ValidationError component should handle displaying these near fields
+              console.error("Formspree field errors:", formspreeErrors);
+              toast({
+                 title: "Submission Error",
+                 description: "Please check the form for errors.",
+                 variant: "destructive",
+              });
+          } else if (!Array.isArray(formspreeErrors) && typeof formspreeErrors.message === 'string') {
+              // Handle a single error object with a general message
+              toast({
+                  title: "Submission Error",
+                  description: formspreeErrors.message,
+                  variant: "destructive",
+              });
+          }
+      }
+  }, [state.errors, toast]);
+
+
+  // Trigger validation check whenever input fields change
+  useEffect(() => {
+      // Add event listeners to trigger validation on input change
+      const formElement = document.getElementById('contact-form-element');
+      if (formElement) {
+          const inputs = formElement.querySelectorAll('input, textarea');
+          inputs.forEach(input => {
+              input.addEventListener('input', validateForm); // Re-validate on input
+          });
+      }
+
+      // Clean up event listeners on component unmount
+      return () => {
+         if (formElement) {
+             const inputs = formElement.querySelectorAll('input, textarea');
+             inputs.forEach(input => {
+                 input.removeEventListener('input', validateForm);
+             });
+         }
+      };
+  }, []);
+
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -48,11 +197,17 @@ const Contact = () => {
                 <CardTitle className="text-2xl text-[#004282]">Send us a message</CardTitle>
               </CardHeader>
               <CardContent>
-                {/* Modified form tag for standard submission */}
+                {/* Added id for form reset and onSubmit from Formspree */}
                 <form
-                  onSubmit={handleSubmit} // Use Formspree's handleSubmit
+                  id="contact-form-element" // Added ID for form reset
+                  onSubmit={handleSubmit}
                   className="space-y-6"
+                  onChange={handleInputChange} // Use onChange to trigger validation check
                 >
+                   {/* Hidden field for reCAPTCHA value */}
+                   <input type="hidden" name="g-recaptcha-response" value={captchaValue || ""} />
+
+
                   <div>
                     <Label htmlFor="name">Full Name *</Label>
                     <Input
@@ -60,11 +215,16 @@ const Contact = () => {
                       name="name"
                       type="text"
                       required
-                      className="mt-1"
+                      className={`mt-1 ${localErrors.name ? 'border-red-500' : ''}`} // Add error class
+                      aria-describedby={localErrors.name ? 'name-error' : undefined}
                     />
-                    <ValidationError
+                    {localErrors.name && ( // Display local validation error
+                      <p id="name-error" className="text-red-500 text-sm mt-1">{localErrors.name}</p>
+                    )}
+                    <ValidationError // Formspree validation error
                       field="name"
-                      errors={state.errors}/>
+                      errors={state.errors}
+                    />
                   </div>
 
                   <div>
@@ -74,11 +234,16 @@ const Contact = () => {
                       name="email"
                       type="email"
                       required
-                      className="mt-1"
+                      className={`mt-1 ${localErrors.email ? 'border-red-500' : ''}`} // Add error class
+                      aria-describedby={localErrors.email ? 'email-error' : undefined}
                     />
-                    <ValidationError
+                     {localErrors.email && ( // Display local validation error
+                      <p id="email-error" className="text-red-500 text-sm mt-1">{localErrors.email}</p>
+                    )}
+                    <ValidationError // Formspree validation error
                       field="email"
-                      errors={state.errors}/>
+                      errors={state.errors}
+                    />
                   </div>
 
                   <div>
@@ -88,12 +253,17 @@ const Contact = () => {
                       name="subject"
                       type="text"
                       required
-                      className="mt-1"
+                      className={`mt-1 ${localErrors.subject ? 'border-red-500' : ''}`} // Add error class
                       placeholder="What can we help you with?"
+                       aria-describedby={localErrors.subject ? 'subject-error' : undefined}
                     />
-                    <ValidationError
+                    {localErrors.subject && ( // Display local validation error
+                      <p id="subject-error" className="text-red-500 text-sm mt-1">{localErrors.subject}</p>
+                    )}
+                    <ValidationError // Formspree validation error
                       field="subject"
-                      errors={state.errors}/>
+                      errors={state.errors}
+                    />
                   </div>
 
                   <div>
@@ -103,23 +273,54 @@ const Contact = () => {
                       name="message"
                       rows={6}
                       required
-                      className="mt-1"
+                      className={`mt-1 ${localErrors.message ? 'border-red-500' : ''}`} // Add error class
                       placeholder="Tell us about your project in detail..."
+                       aria-describedby={localErrors.message ? 'message-error' : undefined}
                     />
-                     <ValidationError
+                     {localErrors.message && ( // Display local validation error
+                      <p id="message-error" className="text-red-500 text-sm mt-1">{localErrors.message}</p>
+                    )}
+                     <ValidationError // Formspree validation error
                       field="message"
-                      errors={state.errors}/>
+                      errors={state.errors}
+                    />
+                  </div>
+
+                  {/* ReCAPTCHA component */}
+                  <div className="flex justify-center">
+                    <ReCAPTCHA
+                      ref={recaptchaRef}
+                      sitekey="6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI" // IMPORTANT: Replace with your actual site key
+                      onChange={handleCaptchaChange}
+                    />
                   </div>
 
 
                   <Button
                     type="submit"
                     className="w-full bg-[#004282] hover:bg-[#003366] text-white"
-                    // No need to disable while submitting as page reloads
-                     disabled={state.submitting}
+                    disabled={!isFormValid()} // Disable based on form validity, captcha, and submission state
                   >
-                      <Send className="mr-2 h-4 w-4" />
+                    {state.submitting ? (
+                       <>
+                         <Send className="mr-2 h-4 w-4 animate-spin" />
+                         Sending...
+                       </>
+                     ) : (
+                       <>
+                         <Send className="mr-2 h-4 w-4" />
+                         Send Message
+                       </>
+                     )}
                   </Button>
+
+                  {/* Display any general Formspree errors */}
+                  {state.errors && typeof state.errors === 'object' && typeof (state.errors as any).message === 'string' && ( // Adjusted access with type assertion
+                      <div className="text-red-500 text-sm text-center">
+                          <p>{(state.errors as any).message}</p>
+                      </div>
+                  )}
+
 
                   <div className="text-sm text-gray-600 text-center space-y-2">
                     <p>* Required fields</p>
@@ -196,7 +397,7 @@ const Contact = () => {
               src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d635194.2098742194!2d-0.8406461975097656!3d51.528771840765326!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47d8a00baf21de75%3A0x52963a5addd52a99!2sLondon%2C%20UK!5e0!3m2!1sen!2sus!4v1640000000000!5m2!1sen!2sus"
               width="100%"
               height="450"
-              style={{ border: 0 }}
+              style={{ border: 0 }} // Corrected style prop
               allowFullScreen
               loading="lazy"
               referrerPolicy="no-referrer-when-downgrade"
