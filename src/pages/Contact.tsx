@@ -5,25 +5,13 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
-import { Mail, Phone, Clock, MapPin, Send, CheckCircle } from "lucide-react";
-// Removing React-Google-Recaptcha to rely on FormSubmit's built-in spam protection
-// import { supabase } from "@/integrations/supabase/client"; // Removing Supabase import
+import { Mail, Phone, Clock, MapPin, Send } from "lucide-react";
+import { useForm, ValidationError } from '@formspree/react';
 
 const Contact = () => {
-  const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    subject: '',
-    message: ''
-  });
 
-  const [formErrors, setFormErrors] = useState<{[key: string]: string}>({});
-  // Removed isSubmitted and isSubmitting state as page will reload
-  // const [isSubmitted, setIsSubmitted] = useState(false);
-  // const [isSubmitting, setIsSubmitting] = useState(false);
-  // Removing captcha state and ref
-  // const [captchaValue, setCaptchaValue] = useState<string | null>(null);
-  // const recaptchaRef = useRef<ReCAPTCHA>(null);
+  // Use Formspree's useForm hook
+  const [state, handleSubmit] = useForm("xnnvgyqq");
   const { toast } = useToast();
 
   // Scroll to top when component mounts
@@ -31,71 +19,10 @@ const Contact = () => {
     window.scrollTo(0, 0);
   }, []);
 
-  const validateForm = () => {
-    const errors: {[key: string]: string} = {};
-
-    if (!formData.name.trim()) {
-      errors.name = 'Name is required';
-    } else if (formData.name.trim().length < 2) {
-      errors.name = 'Name must be at least 2 characters';
-    }
-
-    if (!formData.email.trim()) {
-      errors.email = 'Email is required';
-    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
-      errors.email = 'Please enter a valid email address';
-    }
-
-    if (!formData.subject.trim()) {
-      errors.subject = 'Subject is required';
-    } else if (formData.subject.trim().length < 5) {
-      errors.subject = 'Subject must be at least 5 characters';
-    }
-
-    if (!formData.message.trim()) {
-      errors.message = 'Message is required';
-    } else if (formData.message.trim().length < 10) {
-      errors.message = 'Message must be at least 10 characters long';
-    }
-
-    setFormErrors(errors);
-    return Object.keys(errors).length === 0;
-  };
-
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    const { name, value } = e.target;
-    setFormData(prev => ({
-      ...prev,
-      [name]: value
-    }));
-
-    // Clear error when user starts typing
-    if (formErrors[name]) {
-      setFormErrors(prev => ({
-        ...prev,
-        [name]: ''
-      }));
-    }
-  };
-
-  // Removed captcha handler
-  // const handleCaptchaChange = (value: string | null) => {
-  //   setCaptchaValue(value);
-  // };
-
-  // Simplified handleSubmit for validation only
-  const handleSubmit = (e: React.FormEvent) => {
-    if (!validateForm()) {
-      e.preventDefault(); // Prevent form submission if validation fails
-      toast({
-        title: "Validation Error",
-        description: "Please fix the errors in the form before submitting.",
-        variant: "destructive",
-      });
-      return;
-    }
-    // If validation passes, allow the default form submission
- };
+  if (state.succeeded) {
+    // Redirect to the thank you page
+    window.location.href = '/thank-you'; // Redirect to the thank you page path
+  }
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -123,10 +50,8 @@ const Contact = () => {
               <CardContent>
                 {/* Modified form tag for standard submission */}
                 <form
-                  onSubmit={handleSubmit} // Still use onSubmit for client-side validation
+                  onSubmit={handleSubmit} // Use Formspree's handleSubmit
                   className="space-y-6"
-                  data-netlify="true" // Added for Netlify Forms
-                  name="contact" // Add a name attribute for Netlify Forms identification
                 >
                   <div>
                     <Label htmlFor="name">Full Name *</Label>
@@ -134,15 +59,12 @@ const Contact = () => {
                       id="name"
                       name="name"
                       type="text"
-                      value={formData.name}
-                      onChange={handleInputChange}
                       required
-                      className={`mt-1 ${formErrors.name ? 'border-red-500' : ''}`}
-                      aria-describedby={formErrors.name ? 'name-error' : undefined}
+                      className="mt-1"
                     />
-                    {formErrors.name && (
-                      <p id="name-error" className="text-red-500 text-sm mt-1">{formErrors.name}</p>
-                    )}
+                    <ValidationError
+                      field="name"
+                      errors={state.errors}/>
                   </div>
 
                   <div>
@@ -151,15 +73,12 @@ const Contact = () => {
                       id="email"
                       name="email"
                       type="email"
-                      value={formData.email}
-                      onChange={handleInputChange}
                       required
-                      className={`mt-1 ${formErrors.email ? 'border-red-500' : ''}`}
-                      aria-describedby={formErrors.email ? 'email-error' : undefined}
+                      className="mt-1"
                     />
-                    {formErrors.email && (
-                      <p id="email-error" className="text-red-500 text-sm mt-1">{formErrors.email}</p>
-                    )}
+                    <ValidationError
+                      field="email"
+                      errors={state.errors}/>
                   </div>
 
                   <div>
@@ -168,16 +87,13 @@ const Contact = () => {
                       id="subject"
                       name="subject"
                       type="text"
-                      value={formData.subject}
-                      onChange={handleInputChange}
                       required
-                      className={`mt-1 ${formErrors.subject ? 'border-red-500' : ''}`}
+                      className="mt-1"
                       placeholder="What can we help you with?"
-                      aria-describedby={formErrors.subject ? 'subject-error' : undefined}
                     />
-                    {formErrors.subject && (
-                      <p id="subject-error" className="text-red-500 text-sm mt-1">{formErrors.subject}</p>
-                    )}
+                    <ValidationError
+                      field="subject"
+                      errors={state.errors}/>
                   </div>
 
                   <div>
@@ -186,41 +102,23 @@ const Contact = () => {
                       id="message"
                       name="message"
                       rows={6}
-                      value={formData.message}
-                      onChange={handleInputChange}
                       required
-                      className={`mt-1 ${formErrors.message ? 'border-red-500' : ''}`}
+                      className="mt-1"
                       placeholder="Tell us about your project in detail..."
-                      aria-describedby={formErrors.message ? 'message-error' : undefined}
                     />
-                    {formErrors.message && (
-                      <p id="message-error" className="text-red-500 text-sm mt-1">{formErrors.message}</p>
-                    )}
+                     <ValidationError
+                      field="message"
+                      errors={state.errors}/>
                   </div>
 
-                  {/* Add hidden field for Netlify Forms redirection */}
-                  <input type="hidden" name="_redirect" value="/thank-you" />
-
-
-                  {/* FormSubmit handles reCAPTCHA by default in standard forms */}
-                  {/* Removing ReCAPTCHA component */}
-                  {/* <div className="flex justify-center">
-                    <ReCAPTCHA
-                      sitekey="6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI" // Test site key - replace with your actual site key
-                      onChange={handleCaptchaChange}
-                    />
-                  </div> */}
 
                   <Button
                     type="submit"
                     className="w-full bg-[#004282] hover:bg-[#003366] text-white"
                     // No need to disable while submitting as page reloads
-                    // disabled={isSubmitting}
+                     disabled={state.submitting}
                   >
-                    <>
                       <Send className="mr-2 h-4 w-4" />
-                      Send Message
-                    </>
                   </Button>
 
                   <div className="text-sm text-gray-600 text-center space-y-2">
