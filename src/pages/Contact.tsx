@@ -84,7 +84,7 @@ const Contact = () => {
       params.append("subject", formData.get("subject")?.toString() || "");
       params.append("message", formData.get("message")?.toString() || "");
 
-      const GAS_URL = "https://script.google.com/macros/s/AKfycbxvizZa_HgrU-LsJrJzB9p2LtSKTJG1yfzetYfE0FX2-AkBzloKptxMMDnQY1hEC7yM/exec";
+      const GAS_URL = "https://script.google.com/macros/s/AKfycbwQ6YM_OIP4odiVIgYU4vqLOo4ijc3EwuFWuYtotHO6ekBeHd4TEmJIVQ7SAcM0Tf4G/exec";
 
       // Use GET request with params in the URL — avoids the POST/redirect/no-cors body-drop issue
       await fetch(`${GAS_URL}?${params.toString()}`, {
