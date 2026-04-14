@@ -18,10 +18,10 @@ const Index = () => {
       image: "https://images.unsplash.com/photo-1461749280684-dccba630e2f6?ixlib=rb-4.0.3&auto=format&fit=crop&w=2426&q=80",
       title: "Teleiocraft Solutions",
       subtitle: "We Build, Brand & Grow Your Business",
-      description: "From SaaS platforms to AI tools — your full-service technology partner"
+      description: "From SaaS platforms to AI tools, we're your full-service technology partner"
     },
     {
-      image: "/lovable-uploads/Hero-section.jpg",
+      image: "/saas-dashboard-hero.png",
       title: "SaaS & App Development",
       subtitle: "Scalable products built for the real world",
       description: "We design and build multi-tenant SaaS platforms, web apps, and mobile apps from the ground up"
@@ -37,7 +37,7 @@ const Index = () => {
   const services = [
     {
       title: "SaaS Product Development",
-      description: "We build scalable, multi-tenant SaaS platforms from architecture to launch — including billing, dashboards, and auth.",
+      description: "We build scalable, multi-tenant SaaS platforms from architecture to launch, including billing, dashboards, and auth.",
       icon: <Layers className="h-8 w-8" />,
       accent: "from-[#004282] to-[#0068cc]"
     },
@@ -55,13 +55,13 @@ const Index = () => {
     },
     {
       title: "Cloud & Infrastructure",
-      description: "Modern cloud solutions on AWS, GCP, or Azure — keeping your products fast, secure, and always available.",
+      description: "Modern cloud solutions on AWS, GCP, OCI, or Azure, keeping your products fast, secure, and always available.",
       icon: <Cloud className="h-8 w-8" />,
       accent: "from-[#1a3a5c] to-[#004282]"
     },
     {
       title: "Brand Identity & Strategy",
-      description: "We help companies define who they are — from logo and visual identity to brand voice and market positioning.",
+      description: "We help companies define who they are, from logo and visual identity to brand voice and market positioning.",
       icon: <Palette className="h-8 w-8" />,
       accent: "from-[#5b21b6] to-[#7c3aed]"
     },
@@ -160,11 +160,11 @@ const Index = () => {
               <div key={index} className="relative h-screen flex-[0_0_100%]">
                 {/* Background overlay with blue tint */}
                 <div className="absolute inset-0 bg-gradient-to-br from-[#004282]/80 to-[#0056a3]/80 z-10"></div>
-                
+
                 {/* Background image */}
-                <div className="absolute inset-0 bg-cover bg-center bg-no-repeat" 
-                     style={{backgroundImage: `url('${slide.image}')`}}></div>
-                
+                <div className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+                  style={{ backgroundImage: `url('${slide.image}')` }}></div>
+
                 <div className="relative z-20 h-full flex items-center justify-center">
                   <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-white">
                     <h1 className="text-4xl md:text-6xl font-bold mb-6 animate-fade-in">
@@ -187,7 +187,7 @@ const Index = () => {
             ))}
           </div>
         </div>
-        
+
         <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 z-20">
           <ArrowDown className="h-8 w-8 animate-bounce text-white" />
         </div>
@@ -204,7 +204,7 @@ const Index = () => {
               Comprehensive digital solutions to elevate your brand and drive growth
             </p>
           </div>
-          
+
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {services.map((service, index) => (
               <Card key={index} className="hover:shadow-xl hover:-translate-y-1 transition-all duration-300 border-0 shadow-md rounded-2xl overflow-hidden group">
@@ -223,7 +223,7 @@ const Index = () => {
               </Card>
             ))}
           </div>
-          
+
           <div className="text-center mt-12">
             <Button asChild size="lg" className="bg-[#004282] hover:bg-[#003366] text-white">
               <Link to="/services">
@@ -245,7 +245,7 @@ const Index = () => {
               We combine expertise, innovation, and dedication to deliver exceptional results
             </p>
           </div>
-          
+
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             {features.map((feature, index) => (
               <div key={index} className="text-center">
@@ -275,7 +275,7 @@ const Index = () => {
               Don't just take our word for it - hear from our satisfied clients
             </p>
           </div>
-          
+
           {/* Desktop Carousel */}
           <div className="relative max-w-6xl mx-auto hidden md:block">
             <div className="overflow-hidden" ref={testimonialsEmblaRef}>
@@ -330,7 +330,7 @@ const Index = () => {
                 ))}
               </div>
             </div>
-            
+
             {/* Mobile carousel indicators */}
             <div className="flex justify-center mt-6 space-x-2">
               {testimonials.map((_, index) => (
