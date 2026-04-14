@@ -68,7 +68,7 @@ const Contact = () => {
     return Object.keys(errors).length === 0;
   };
 
-  // Handle Form Submission with Google Apps Script
+  // Handle Form Submission with Google Apps Script (GET with query params)
   const handleSubmission = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!validateForm()) return;
@@ -76,21 +76,22 @@ const Contact = () => {
     setIsSubmitting(true);
     const form = e.currentTarget;
     const formData = new FormData(form);
-    const data = Object.fromEntries(formData.entries());
 
     try {
       const params = new URLSearchParams();
-      for (const [key, value] of formData.entries()) {
-        params.append(key, value.toString());
-      }
+      params.append("name", formData.get("name")?.toString() || "");
+      params.append("email", formData.get("email")?.toString() || "");
+      params.append("subject", formData.get("subject")?.toString() || "");
+      params.append("message", formData.get("message")?.toString() || "");
 
-      const response = await fetch("https://script.google.com/macros/s/AKfycbyRmz_LD5kouPk1XbnEs7bjxsuogeR_SHWw6oci2QUvskEO5wRPiXCg5XNIXFLLEYuP/exec", {
-        method: "POST",
-        mode: "no-cors", 
-        body: params,
+      const GAS_URL = "https://script.google.com/macros/s/AKfycbxvizZa_HgrU-LsJrJzB9p2LtSKTJG1yfzetYfE0FX2-AkBzloKptxMMDnQY1hEC7yM/exec";
+
+      // Use GET request with params in the URL — avoids the POST/redirect/no-cors body-drop issue
+      await fetch(`${GAS_URL}?${params.toString()}`, {
+        method: "GET",
+        mode: "no-cors",
       });
 
-      // Reset success state after a minor delay to ensure user sees transition
       setSucceeded(true);
     } catch (error) {
       console.error("Submission error:", error);
