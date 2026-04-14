@@ -36,13 +36,13 @@ const About = () => {
   const team = [
     {
       name: "Simeon Julius",
-      role: "CEO & Founder",
+      role: "CEO & Founder | Cloud Engineer (AWS, Azure, Oracle)",
       image: "/lovable-uploads/Simeion Julius.jpeg",
-      bio: "Visionary leader with years in Cloud Consulting (AWS, Azure, Oracle)",
+      bio: "Visionary leader with years of experience in Cloud Consulting ",
     },
     {
       name: "Abomide Oluwaseye",
-      role: "Co-Founder and Product Engineer| AI Agents & Automation| AWS Certified",
+      role: "Co-Founder & Product Engineer| AI Agents & Automation| AWS Certified",
       image: "/lovable-uploads/Abomide Oluwaseye.jpeg",
       bio: "Build scalable software systems that help businesses manage operations efficiently (HireWix, an AI-powered HR and payroll platform)",
     },
