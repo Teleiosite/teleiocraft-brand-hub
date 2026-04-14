@@ -79,18 +79,18 @@ const Contact = () => {
     const data = Object.fromEntries(formData.entries());
 
     try {
-      const response = await fetch("https://script.google.com/macros/s/AKfycbxHnKgqjnOkoyHsy4JDzo55enKd3YXNJPAxEJb2HfEWfWYHKkXaMO3nCSv_dgQZ1sm6/exec", {
+      const params = new URLSearchParams();
+      for (const [key, value] of formData.entries()) {
+        params.append(key, value.toString());
+      }
+
+      const response = await fetch("https://script.google.com/macros/s/AKfycbyRmz_LD5kouPk1XbnEs7bjxsuogeR_SHWw6oci2QUvskEO5wRPiXCg5XNIXFLLEYuP/exec", {
         method: "POST",
-        mode: "no-cors", // Required for Google Apps Script Web App redirects
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data),
+        mode: "no-cors", 
+        body: params,
       });
 
-      // Since mode is "no-cors", we can't read the response body, 
-      // but if the fetch doesn't throw, we assume success or handle success state via timeout/delay
-      // For GAS, 'no-cors' means the request is sent, but the response is opaque.
+      // Reset success state after a minor delay to ensure user sees transition
       setSucceeded(true);
     } catch (error) {
       console.error("Submission error:", error);

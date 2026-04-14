@@ -44,7 +44,7 @@ const About = () => {
       name: "Abomide Oluwaseye",
       role: "Co-Founder and Product Engineer| AI Agents & Automation| AWS Certified",
       image: "/lovable-uploads/Abomide Oluwaseye.jpeg",
-      bio: "Award-winning designer passionate about brand storytelling",
+      bio: "Build scalable software systems that help businesses manage operations efficiently (HireWix, an AI-powered HR and payroll platform)",
     },
     {
       name: "Oyegun Ololade",
