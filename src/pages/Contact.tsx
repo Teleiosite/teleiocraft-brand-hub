@@ -6,7 +6,6 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
 import { Mail, Phone, Clock, MapPin, Send, CheckCircle } from "lucide-react";
-import { useForm, ValidationError } from '@formspree/react';
 import ReCAPTCHA from "react-google-recaptcha";
 
 // Define a type for the expected error structure from Formspree
@@ -16,8 +15,8 @@ interface FormspreeError {
 }
 
 const Contact = () => {
-  // Use Formspree's useForm hook
-  const [state, handleSubmit] = useForm("xnnvgyqq");
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [succeeded, setSucceeded] = useState(false);
   const { toast } = useToast();
 
   // State and ref for reCAPTCHA
@@ -69,6 +68,42 @@ const Contact = () => {
     return Object.keys(errors).length === 0;
   };
 
+  // Handle Form Submission with Google Apps Script
+  const handleSubmission = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (!validateForm()) return;
+
+    setIsSubmitting(true);
+    const form = e.currentTarget;
+    const formData = new FormData(form);
+    const data = Object.fromEntries(formData.entries());
+
+    try {
+      const response = await fetch("https://script.google.com/macros/s/AKfycbxHnKgqjnOkoyHsy4JDzo55enKd3YXNJPAxEJb2HfEWfWYHKkXaMO3nCSv_dgQZ1sm6/exec", {
+        method: "POST",
+        mode: "no-cors", // Required for Google Apps Script Web App redirects
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
+
+      // Since mode is "no-cors", we can't read the response body, 
+      // but if the fetch doesn't throw, we assume success or handle success state via timeout/delay
+      // For GAS, 'no-cors' means the request is sent, but the response is opaque.
+      setSucceeded(true);
+    } catch (error) {
+      console.error("Submission error:", error);
+      toast({
+        title: "Submission Error",
+        description: "There was a problem sending your message. Please try again later.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
   // Handle input change to trigger validation check for button state
   const handleInputChange = () => {
       // This function exists primarily to trigger a re-render
@@ -95,13 +130,13 @@ const Contact = () => {
                              subjectInput?.value.trim() !== '' &&
                              messageInput?.value.trim() !== '';
 
-      return isFieldsFilled && Object.keys(localErrors).length === 0 && captchaValue !== null && !state.submitting;
+      return isFieldsFilled && Object.keys(localErrors).length === 0 && captchaValue !== null && !isSubmitting;
   }
 
 
-  // Handle success state - Formspree's state.succeeded will be true
+  // Handle success state
   useEffect(() => {
-    if (state.succeeded) {
+    if (succeeded) {
       // Show a success toast message
       toast({
          title: "Message Sent Successfully!",
@@ -119,35 +154,11 @@ const Contact = () => {
       // You can still redirect if you prefer, but showing an on-page
       // success message with the hook is often preferred.
       // window.location.href = '/thank-you';
+      setSucceeded(false);
     }
-  }, [state.succeeded, toast]);
+  }, [succeeded, toast]);
 
 
-  // Handle Formspree errors with a toast
-  useEffect(() => {
-      // Cast state.errors to the defined FormspreeError type for better type checking
-      const formspreeErrors = state.errors as unknown as FormspreeError | FormspreeError[];
-
-      if (formspreeErrors && typeof formspreeErrors === 'object') {
-          if (Array.isArray(formspreeErrors) && formspreeErrors.length > 0) {
-              // Handle array of errors (e.g., field errors)
-              // The ValidationError component should handle displaying these near fields
-              console.error("Formspree field errors:", formspreeErrors);
-              toast({
-                 title: "Submission Error",
-                 description: "Please check the form for errors.",
-                 variant: "destructive",
-              });
-          } else if (!Array.isArray(formspreeErrors) && typeof formspreeErrors.message === 'string') {
-              // Handle a single error object with a general message
-              toast({
-                  title: "Submission Error",
-                  description: formspreeErrors.message,
-                  variant: "destructive",
-              });
-          }
-      }
-  }, [state.errors, toast]);
 
 
   // Trigger validation check whenever input fields change
@@ -200,7 +211,7 @@ const Contact = () => {
                 {/* Added id for form reset and onSubmit from Formspree */}
                 <form
                   id="contact-form-element" // Added ID for form reset
-                  onSubmit={handleSubmit}
+                  onSubmit={handleSubmission}
                   className="space-y-6"
                   onChange={handleInputChange} // Use onChange to trigger validation check
                 >
@@ -221,10 +232,6 @@ const Contact = () => {
                     {localErrors.name && ( // Display local validation error
                       <p id="name-error" className="text-red-500 text-sm mt-1">{localErrors.name}</p>
                     )}
-                    <ValidationError // Formspree validation error
-                      field="name"
-                      errors={state.errors}
-                    />
                   </div>
 
                   <div>
@@ -240,10 +247,6 @@ const Contact = () => {
                      {localErrors.email && ( // Display local validation error
                       <p id="email-error" className="text-red-500 text-sm mt-1">{localErrors.email}</p>
                     )}
-                    <ValidationError // Formspree validation error
-                      field="email"
-                      errors={state.errors}
-                    />
                   </div>
 
                   <div>
@@ -260,10 +263,6 @@ const Contact = () => {
                     {localErrors.subject && ( // Display local validation error
                       <p id="subject-error" className="text-red-500 text-sm mt-1">{localErrors.subject}</p>
                     )}
-                    <ValidationError // Formspree validation error
-                      field="subject"
-                      errors={state.errors}
-                    />
                   </div>
 
                   <div>
@@ -280,10 +279,6 @@ const Contact = () => {
                      {localErrors.message && ( // Display local validation error
                       <p id="message-error" className="text-red-500 text-sm mt-1">{localErrors.message}</p>
                     )}
-                     <ValidationError // Formspree validation error
-                      field="message"
-                      errors={state.errors}
-                    />
                   </div>
 
                   {/* ReCAPTCHA component */}
@@ -301,31 +296,24 @@ const Contact = () => {
                     className="w-full bg-[#004282] hover:bg-[#003366] text-white"
                     disabled={!isFormValid()} // Disable based on form validity, captcha, and submission state
                   >
-                    {state.submitting ? (
-                       <>
-                         <Send className="mr-2 h-4 w-4 animate-spin" />
-                         Sending...
-                       </>
-                     ) : (
-                       <>
-                         <Send className="mr-2 h-4 w-4" />
-                         Send Message
-                       </>
-                     )}
+                    {isSubmitting ? (
+                      <>
+                        <Send className="mr-2 h-4 w-4 animate-spin" />
+                        Sending...
+                      </>
+                    ) : (
+                      <>
+                        <Send className="mr-2 h-4 w-4" />
+                        Send Message
+                      </>
+                    )}
                   </Button>
-
-                  {/* Display any general Formspree errors */}
-                  {state.errors && typeof state.errors === 'object' && typeof (state.errors as any).message === 'string' && ( // Adjusted access with type assertion
-                      <div className="text-red-500 text-sm text-center">
-                          <p>{(state.errors as any).message}</p>
-                      </div>
-                  )}
 
 
                   <div className="text-sm text-gray-600 text-center space-y-2">
                     <p>* Required fields</p>
                     <p>After submitting, your message will be sent and you will see a confirmation.</p>
-                    <p>For urgent matters, call us directly at +1 (555) 123-4567</p>
+                    <p>For urgent matters, call us at +44 7534 468836 (UK) or +234 813 759 2915 (Nigeria)</p>
                   </div>
                 </form>
               </CardContent>
@@ -336,21 +324,43 @@ const Contact = () => {
               <div>
                 <h3 className="text-2xl font-bold text-gray-900 mb-6">Contact Information</h3>
                 <div className="space-y-4">
-                  <div className="flex items-center">
-                    <Mail className="h-6 w-6 text-[#004282] mr-3" />
-                    <span className="text-gray-600">TeleiocraftSolutions@gmail.com</span>
-                  </div>
-                  <div className="flex items-center">
-                    <Phone className="h-6 w-6 text-[#004282] mr-3" />
-                    <span className="text-gray-600">+1 (555) 123-4567</span>
-                  </div>
-                  <div className="flex items-center">
-                    <Clock className="h-6 w-6 text-[#004282] mr-3" />
-                    <span className="text-gray-600">Mon - Fri: 9:00 AM - 6:00 PM</span>
-                  </div>
-                  <div className="flex items-center">
-                    <MapPin className="h-6 w-6 text-[#004282] mr-3" />
-                    <span className="text-gray-600">Greater London, United Kingdom</span>
+                  <div className="space-y-6">
+                    <div>
+                      <h4 className="font-semibold text-gray-900 mb-2">United Kingdom</h4>
+                      <div className="flex items-center mb-1">
+                        <Phone className="h-4 w-4 text-[#004282] mr-2" />
+                        <span className="text-gray-600">07534 468836</span>
+                      </div>
+                      <div className="flex items-start">
+                        <MapPin className="h-4 w-4 text-[#004282] mr-2 mt-1" />
+                        <span className="text-gray-600 text-sm">
+                          13 Warwick close, Hornchurch, RM11 3DQ
+                        </span>
+                      </div>
+                    </div>
+                    
+                    <div>
+                      <h4 className="font-semibold text-gray-900 mb-2">Nigeria</h4>
+                      <div className="flex items-center mb-1">
+                        <Phone className="h-4 w-4 text-[#004282] mr-2" />
+                        <span className="text-gray-600">08137592915</span>
+                      </div>
+                      <div className="flex items-start">
+                        <MapPin className="h-4 w-4 text-[#004282] mr-2 mt-1" />
+                        <span className="text-gray-600 text-sm">
+                          MSQ Gate, Babcock University, Ilishan Ogun State
+                        </span>
+                      </div>
+                    </div>
+
+                    <div className="flex items-center pt-2">
+                      <Mail className="h-6 w-6 text-[#004282] mr-3" />
+                      <span className="text-gray-600">TeleiocraftSolutions@gmail.com</span>
+                    </div>
+                    <div className="flex items-center">
+                      <Clock className="h-6 w-6 text-[#004282] mr-3" />
+                      <span className="text-gray-600">Mon - Fri: 9:00 AM - 6:00 PM</span>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -388,7 +398,7 @@ const Contact = () => {
               Find Us
             </h2>
             <p className="text-lg text-gray-600">
-              We're located in Greater London, United Kingdom
+              We operate globally with offices in the United Kingdom and Nigeria
             </p>
           </div>
 

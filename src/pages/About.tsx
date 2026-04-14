@@ -35,41 +35,41 @@ const About = () => {
 
   const team = [
     {
-      name: "Alex Johnson",
+      name: "Simeon Julius",
       role: "CEO & Founder",
-      image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=300&h=300&fit=crop&crop=face",
-      bio: "Visionary leader with 10+ years in digital transformation"
+      image: "/lovable-uploads/Simeion Julius.jpeg",
+      bio: "Visionary leader with years in Cloud Consulting (AWS, Azure, Oracle)",
     },
     {
-      name: "Sarah Chen",
-      role: "Creative Director",
-      image: "https://images.unsplash.com/photo-1494790108755-2616b612b786?w=300&h=300&fit=crop&crop=face",
-      bio: "Award-winning designer passionate about brand storytelling"
+      name: "Abomide Oluwaseye",
+      role: "Co-Founder and Product Engineer| AI Agents & Automation| AWS Certified",
+      image: "/lovable-uploads/Abomide Oluwaseye.jpeg",
+      bio: "Award-winning designer passionate about brand storytelling",
     },
     {
-      name: "Michael Rodriguez",
-      role: "Technical Lead",
-      image: "https://images.unsplash.com/photo-1519244703995-f4e0f30006d5?w=300&h=300&fit=crop&crop=face",
-      bio: "Full-stack developer and AI technology enthusiast"
+      name: "Oyegun Ololade",
+      role: "Marketing Strategist, CTO",
+      image: "/lovable-uploads/Oyegun Ololade.jpeg",
+      bio: "Data-driven marketer focused on ROI and growth",
     },
     {
       name: "Emily Davis",
-      role: "Marketing Strategist",
+      role: "Creative Director",
       image: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=300&h=300&fit=crop&crop=face",
-      bio: "Data-driven marketer focused on ROI and growth"
+      bio: "Award-winning designer passionate about brand storytelling",
     },
     {
       name: "David Thompson",
       role: "UX/UI Designer",
       image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=300&h=300&fit=crop&crop=face",
-      bio: "User experience expert creating intuitive digital solutions"
+      bio: "User experience expert creating intuitive digital solutions",
     },
     {
       name: "Lisa Wang",
       role: "Project Manager",
       image: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=300&h=300&fit=crop&crop=face",
-      bio: "Agile methodology expert ensuring seamless project delivery"
-    }
+      bio: "Agile methodology expert ensuring seamless project delivery",
+    },
   ];
 
   const stats = [
@@ -111,7 +111,7 @@ const About = () => {
                 We believe every business deserves access to professional-grade digital services that were once only available to large corporations. Our mission is to democratize digital excellence.
               </p>
             </div>
-            
+
             <div>
               <div className="flex items-center mb-6">
                 <Eye className="h-10 w-10 text-[#004282] mr-4" />
@@ -139,7 +139,7 @@ const About = () => {
               From humble beginnings to industry leaders
             </p>
           </div>
-          
+
           <div className="max-w-4xl mx-auto">
             <Card className="border-0 shadow-lg">
               <CardContent className="p-8">
@@ -169,7 +169,7 @@ const About = () => {
               The principles that guide everything we do
             </p>
           </div>
-          
+
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             {values.map((value, index) => (
               <Card key={index} className="border-0 shadow-md hover:shadow-lg transition-shadow duration-300">
@@ -201,7 +201,7 @@ const About = () => {
               Numbers that reflect our commitment to excellence
             </p>
           </div>
-          
+
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
             {stats.map((stat, index) => (
               <div key={index} className="text-center">
@@ -224,7 +224,7 @@ const About = () => {
               The talented professionals behind your success
             </p>
           </div>
-          
+
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {team.map((member, index) => (
               <Card key={index} className="border-0 shadow-md hover:shadow-lg transition-shadow duration-300">
