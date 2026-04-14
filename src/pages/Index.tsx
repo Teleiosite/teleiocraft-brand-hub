@@ -21,7 +21,7 @@ const Index = () => {
       description: "From SaaS platforms to AI tools, we're your full-service technology partner"
     },
     {
-      image: "/saas-dashboard-hero.png",
+      image: "/lovable-uploads/SaaS Dashbord 2.jpg",
       title: "SaaS & App Development",
       subtitle: "Scalable products built for the real world",
       description: "We design and build multi-tenant SaaS platforms, web apps, and mobile apps from the ground up"
