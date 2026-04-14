@@ -15,16 +15,16 @@ const Index = () => {
 
   const heroSlides = [
     {
+      image: "/lovable-uploads/saas-dashboard-2.jpg",
+      title: "SaaS & App Development",
+      subtitle: "Scalable products built for the real world",
+      description: "We design and build multi-tenant SaaS platforms, web apps, and mobile apps from the ground up"
+    },
+    {
       image: "https://images.unsplash.com/photo-1461749280684-dccba630e2f6?ixlib=rb-4.0.3&auto=format&fit=crop&w=2426&q=80",
       title: "Teleiocraft Solutions",
       subtitle: "We Build, Brand & Grow Your Business",
       description: "From SaaS platforms to AI tools, we're your full-service technology partner"
-    },
-    {
-      image: "/lovable-uploads/SaaS Dashbord 2.jpg",
-      title: "SaaS & App Development",
-      subtitle: "Scalable products built for the real world",
-      description: "We design and build multi-tenant SaaS platforms, web apps, and mobile apps from the ground up"
     },
     {
       image: "https://images.unsplash.com/photo-1485827404703-89b55fcc595e?ixlib=rb-4.0.3&auto=format&fit=crop&w=2426&q=80",
@@ -168,10 +168,10 @@ const Index = () => {
                 <div className="relative z-20 h-full flex items-center justify-center">
                   <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-white">
                     <h1 className="text-4xl md:text-6xl font-bold mb-6 animate-fade-in">
-                      {index === 0 ? "Teleiocraft Solutions" : slide.title}
+                      {slide.title}
                     </h1>
                     <p className="text-xl md:text-2xl mb-4 text-blue-100">
-                      {index === 0 ? "We're your Brand Builders and Growth Partners" : slide.subtitle}
+                      {slide.subtitle}
                     </p>
                     <p className="text-lg mb-8 text-blue-200 max-w-2xl mx-auto">
                       {slide.description}
