@@ -6,8 +6,35 @@ import { ArrowDown, Star, Users, Trophy, Clock, CheckCircle, ArrowRight, Layers,
 import { useEffect } from "react";
 import useEmblaCarousel from "embla-carousel-react";
 import Autoplay from "embla-carousel-autoplay";
+import useSEO from "@/hooks/useSEO";
 
 const Index = () => {
+  useSEO({
+    title: "SaaS, Software, AI & Cloud Agency",
+    description: "We Build, Brand & Grow Your Business. Custom SaaS products, web & mobile app development, cloud infrastructure, and AI automation.",
+    canonicalUrl: "https://teleiocraft.com/",
+    jsonLd: {
+      "@context": "https://schema.org",
+      "@type": "ProfessionalService",
+      "name": "Teleiocraft Solutions",
+      "url": "https://teleiocraft.com/",
+      "logo": "https://teleiocraft.com/Teleiocraft_logo.png",
+      "image": "https://teleiocraft.com/teleiocraft-preview.jpg",
+      "description": "Full-service technology partner specializing in SaaS product development, software & mobile apps, cloud infrastructure, AI automation, and brand strategy.",
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Greater London",
+        "addressCountry": "United Kingdom"
+      },
+      "sameAs": [
+        "https://facebook.com",
+        "https://twitter.com",
+        "https://instagram.com",
+        "https://linkedin.com"
+      ]
+    }
+  });
+
   // Scroll to top when component mounts
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -152,6 +179,7 @@ const Index = () => {
 
   return (
     <div className="min-h-screen">
+      <h1 className="sr-only">Teleiocraft Solutions | SaaS, Software, AI & Cloud Agency</h1>
       {/* Hero Carousel Section */}
       <section className="relative h-screen overflow-hidden">
         <div className="overflow-hidden h-full" ref={heroEmblaRef}>
@@ -167,9 +195,9 @@ const Index = () => {
 
                 <div className="relative z-20 h-full flex items-center justify-center">
                   <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-white">
-                    <h1 className="text-4xl md:text-6xl font-bold mb-6 animate-fade-in">
+                    <h2 className="text-4xl md:text-6xl font-bold mb-6 animate-fade-in">
                       {slide.title}
-                    </h1>
+                    </h2>
                     <p className="text-xl md:text-2xl mb-4 text-blue-100">
                       {slide.subtitle}
                     </p>

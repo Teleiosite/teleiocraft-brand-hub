@@ -1,7 +1,14 @@
 import { useLocation } from "react-router-dom";
 import { useEffect } from "react";
+import useSEO from "@/hooks/useSEO";
 
 const NotFound = () => {
+  useSEO({
+    title: "Page Not Found",
+    description: "Oops! The page you are looking for does not exist on Teleiocraft Solutions.",
+    noIndex: true
+  });
+
   const location = useLocation();
 
   useEffect(() => {

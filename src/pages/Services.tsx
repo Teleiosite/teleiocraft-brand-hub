@@ -7,8 +7,15 @@ import {
   Layers, Code2, Bot, Cloud, Palette, BarChart3
 } from "lucide-react";
 import { useEffect } from "react";
+import useSEO from "@/hooks/useSEO";
 
 const Services = () => {
+  useSEO({
+    title: "Tech Services - SaaS, AI, Cloud & App Development",
+    description: "Explore our end-to-end services: SaaS product development, custom web & mobile apps, cloud infrastructure, AI automation, brand identity, and UX/UI growth.",
+    canonicalUrl: "https://teleiocraft.com/services"
+  });
+
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);

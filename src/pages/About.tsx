@@ -3,8 +3,15 @@ import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { ArrowRight, Star, Users, Award, Target, Heart, Lightbulb, Globe, Eye } from "lucide-react";
 import { useEffect } from "react";
+import useSEO from "@/hooks/useSEO";
 
 const About = () => {
+  useSEO({
+    title: "About Us - Brand Builders & Growth Partners",
+    description: "Meet the team at Teleiocraft Solutions. Learn about our mission, vision, values, and our story of empowering businesses with modern digital tools.",
+    canonicalUrl: "https://teleiocraft.com/about"
+  });
+
   // Scroll to top when component mounts
   useEffect(() => {
     window.scrollTo(0, 0);

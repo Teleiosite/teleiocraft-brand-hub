@@ -6,8 +6,15 @@ import { ExternalLink, ArrowRight, Star, TrendingUp, Users, Award } from "lucide
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
 import Autoplay from "embla-carousel-autoplay";
 import { HoverCard, HoverCardContent, HoverCardTrigger } from "@/components/ui/hover-card";
+import useSEO from "@/hooks/useSEO";
 
 const Portfolio = () => {
+  useSEO({
+    title: "Portfolio & Case Studies - Our Work",
+    description: "Explore 49+ showcase projects and client case studies in web design, SaaS development, cloud computing, AI agents, and digital marketing.",
+    canonicalUrl: "https://teleiocraft.com/portfolio"
+  });
+
   const [activeFilter, setActiveFilter] = useState("all");
 
   // Scroll to top when component mounts
@@ -690,7 +697,7 @@ const Portfolio = () => {
                 <div className="relative overflow-hidden">
                   <img
                     src={project.image}
-                    alt={project.title}
+                    alt={`${project.title} - ${project.category} Project by Teleiocraft Solutions`}
                     className="w-full h-56 object-cover group-hover:scale-105 transition-transform duration-300"
                   />
                   <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-40 transition-all duration-300 flex items-center justify-center">

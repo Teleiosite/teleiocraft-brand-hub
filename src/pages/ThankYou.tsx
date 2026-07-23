@@ -1,7 +1,14 @@
 import React from 'react';
-import { Link } from 'react-router-dom'; // Assuming you are using react-router-dom
+import { Link } from 'react-router-dom';
+import useSEO from '@/hooks/useSEO';
 
 const ThankYou: React.FC = () => {
+  useSEO({
+    title: "Thank You",
+    description: "Thank you for contacting Teleiocraft Solutions. We will get back to you shortly.",
+    canonicalUrl: "https://teleiocraft.com/thank-you",
+    noIndex: true
+  });
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100">
       <div className="text-center">

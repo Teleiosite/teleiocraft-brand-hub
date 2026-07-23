@@ -7,6 +7,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
 import { Mail, Phone, Clock, MapPin, Send, CheckCircle } from "lucide-react";
 import ReCAPTCHA from "react-google-recaptcha";
+import useSEO from "@/hooks/useSEO";
 
 // Define a type for the expected error structure from Formspree
 interface FormspreeError {
@@ -15,6 +16,12 @@ interface FormspreeError {
 }
 
 const Contact = () => {
+  useSEO({
+    title: "Book a Free Consultation",
+    description: "Ready to start your project? Get in touch with Teleiocraft Solutions for a free consultation about your SaaS, software, AI, or branding needs.",
+    canonicalUrl: "https://teleiocraft.com/contact"
+  });
+
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [succeeded, setSucceeded] = useState(false);
   const { toast } = useToast();
