@@ -6,7 +6,7 @@ interface SEOProps {
   canonicalUrl?: string;
   image?: string;
   noIndex?: boolean;
-  jsonLd?: Record<string, any>;
+  jsonLd?: Record<string, unknown>;
 }
 
 export const useSEO = ({
